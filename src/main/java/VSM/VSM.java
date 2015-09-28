@@ -101,7 +101,7 @@ public class VSM {
                 }
             }
         }
-        this.terms.sort(null);
+        Collections.sort(this.terms);
     }
     
     /**
