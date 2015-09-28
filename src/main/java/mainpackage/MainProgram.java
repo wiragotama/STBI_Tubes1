@@ -26,9 +26,20 @@ public class MainProgram {
         temp.print();
         DataTokenizedInstances collection = new DataTokenizedInstances();
         collection.add(temp);
+        terms.set(0, "haha");
+        temp.setText(terms);
         collection.add(temp);
         VSM tfidf = new VSM();
         tfidf.makeTFIDFWeightMatrix(4, false, false, collection);
+        System.out.println(tfidf.getTerms());
+        tfidf.printWeightMatrix();
+        
+        //contoh save
+        //tfidf.save("tfidf");
+        
+        //contoh load
+        //VSM tfidf = new VSM();
+        tfidf.load("tfidf");
         System.out.println(tfidf.getTerms());
         tfidf.printWeightMatrix();
     }
