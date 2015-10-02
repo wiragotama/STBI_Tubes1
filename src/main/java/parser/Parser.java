@@ -277,10 +277,8 @@ public class Parser {
         parser.parseQueries(queriesFilepath);
         parser.parseRelevanceJudgements(relevanceJudgementsFilepath);
 
-        System.out.println("Query:\n" + parser.getQueries().get(0));
-        for(Integer i : parser.getRelevanceJudgements().get(0))
-        {
-            System.out.println(parser.getDocuments().get(i));
-        }
+        Parser parser1 = new Parser("test_collections/adi/adi.all", "test_collections/adi/query.text", "test_collections/adi/qrels.text");
+        parser1.printRelevanceJudgements();
+
     }
 }
