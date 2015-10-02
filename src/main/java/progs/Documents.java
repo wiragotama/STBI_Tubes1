@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.aliasi.tokenizer.IndoEuropeanTokenizerFactory;
+import com.aliasi.tokenizer.PorterStemmerTokenizerFactory;
+import com.aliasi.tokenizer.Tokenization;
+import com.aliasi.tokenizer.TokenizerFactory;
+
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.process.DocumentPreprocessor;
 import parser.Parser;
@@ -19,6 +24,8 @@ public class Documents {
 		Parser parser = new Parser();
 		parser.parseDocuments(filePath);
 		tokenizeDocuments(parser.getDocuments());
+		removeStopWords();
+		stem();
 	}
 	
 	private void tokenizeDocuments(List<String> documents){
@@ -41,6 +48,22 @@ public class Documents {
 		}
 		
 		return token;
+	}
+	
+	private void removeStopWords(){
+		
+	}
+	
+	private void stem(){
+		TokenizerFactory f1 = IndoEuropeanTokenizerFactory.INSTANCE;
+		TokenizerFactory porter = new PorterStemmerTokenizerFactory(f1);
+		
+		for(int i = 0; i < documents.size(); i++){
+			for(int j = 0; j < documents.get(i).length; j++){
+				Tokenization stem = new Tokenization(documents.get(i)[j], porter);
+				documents.get(i)[j] = stem.token(0);
+			}
+		}
 	}
 	
 	public String toString(){
