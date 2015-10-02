@@ -1,0 +1,61 @@
+Test Collection CISI terdiri dari 3 file:
+1. cisi.all -> data collection
+2. qrels.text -> relevance judgement
+3. query.text -> query
+
+Penjelelasan untuk format isi setiap file:
+1. File: cisi.all
+   Isi:
+    .I 1 -> nomor dokumen
+	.T -> judul dokumen
+	18 Editions of the Dewey Decimal Classifications
+	.A -> nama pengarang dokumen
+	Comaromi, J.P.
+	.W -> isi dari dokumen
+	   The present study is a history of the DEWEY Decimal
+	Classification.  The first edition of the DDC was published
+	in 1876, the eighteenth edition in 1971, and future editions
+	will continue to appear as needed.  In spite of the DDC's
+	long and healthy life, however, its full story has never
+	been told.  There have been biographies of Dewey
+	that briefly describe his system, but this is the first
+	attempt to provide a detailed history of the work that
+	more than any other has spurred the growth of
+	librarianship in this country and abroad.
+	.X -> index (diabaikan saja, tidak usah digunakan)
+	1	2	1
+	1	2	1
+	1	2	1
+	1	2	1
+	1	2	1
+	556	2	1
+	92	2	1
+	262	2	1
+	1004	2	1
+	1024	2	1
+	.I 2 -> nomor dokumen
+	{...}
+
+2. File: qrels.text
+   Isi:
+   1 28 0 0
+   1 35 0 0
+   1 38 0 0
+   1 42 0 0
+   1 43 0 0
+   {...}
+
+   * Kolom ke-1 menyatakan nomor query
+   * Kolom ke-2 menyatakan nomor dokumen yang relevan
+   * Kolom ke-3 dan ke-4 diabaikan saja (tidak digunakan)
+
+3. File: query.text
+   Isi:
+   .I 1 -> nomor query
+   .W -> isi query
+   What problems and concerns are there in making up descriptive titles?  
+   What difficulties are involved in automatically retrieving articles from 
+   approximate titles?  
+   What is the usual relevance of the content of articles to their titles?
+   .I 2 -> nomor query
+   {...}
