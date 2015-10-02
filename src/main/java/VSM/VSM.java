@@ -1,9 +1,10 @@
 package VSM;
 
-import Model.*;
-import Model.DataTokenizedInstances;
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -12,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import Model.DataTokenized;
+import Model.DataTokenizedInstances;
 
 /**
  *
@@ -379,10 +383,13 @@ public class VSM {
     private void loadFromInvertedFile(String filePath)
     {
         System.out.println("Loading Inverted File");
-        FileInputStream inputStream = null;
+        BufferedReader reader = null;
+        String line = null;
         this.weightMatrix = new ArrayList();
         int colSize = this.collectionSize;
         int N = this.terms.size();
+        
+        File invertedFile = new File(filePath);
         
         for (int i=0; i<N; i++) {
             ArrayList<Double> temp = new ArrayList();
@@ -393,29 +400,52 @@ public class VSM {
         
         try
         {
-            inputStream = new FileInputStream(filePath);
+            reader = new BufferedReader(new FileReader(invertedFile));
         }
         catch (FileNotFoundException ex)
         {
             System.out.println(filePath+" is not found");
         }
 
-        ArrayList<String> line = this.getLine(inputStream,' '); //terms docNo weight
-        while (line!=null && !line.isEmpty())
-        {
-            int idxTerm = this.terms.indexOf(line.get(0));
-            int idxDoc = Integer.valueOf(line.get(1));
-            double val = Double.valueOf(line.get(2));
-            this.weightMatrix.get(idxTerm).set(idxDoc, val);
-            line = this.getLine(inputStream, ' ');
-        }   
+        try {
+			while ((line = reader.readLine()) != null)
+			{
+				String split[] = line.split(" ");
+			    int idxTerm = this.terms.indexOf(split[0]);
+			    int idxDoc = Integer.valueOf(split[1]);
+			    double val = Double.valueOf(split[2]);
+			    this.weightMatrix.get(idxTerm).set(idxDoc, val);
+			}
+		} catch (NumberFormatException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}   
         
         
         try {
-            inputStream.close();
+            reader.close();
         } catch (IOException ex) {
             Logger.getLogger(VSM.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private int index(String term){
+    	int index = 0;
+    	boolean found = false;
+    	
+    	while(index < terms.size() && !found){
+    		if (terms.get(index).equalsIgnoreCase(term)){
+    			found = true;
+    		}
+    		
+    		index++;
+    	}
+    	
+    	for(String item : terms){
+    		System.out.println("term " + terms.indexOf(item) + ": " + item);
+    	}
+    	    	
+    	return index;
     }
     
     /**
@@ -450,30 +480,37 @@ public class VSM {
     private void loadIDF(String filePath)
     {
         System.out.println("Loading Terms IDF File");
-        FileInputStream inputStream = null;
+        BufferedReader reader = null;
+        String line = null;
         this.terms = new ArrayList();
         this.termsIDF = new ArrayList();
         
+        File idfFile = new File(filePath);
+        
         try
         {
-            inputStream = new FileInputStream(filePath);
+            reader = new BufferedReader(new FileReader(idfFile));
         }
         catch (FileNotFoundException ex)
         {
             System.out.println(filePath+" is not found");
         }
 
-        ArrayList<String> line = this.getLine(inputStream,' ');
-        while (line!=null && !line.isEmpty())
-        {
-            this.terms.add(line.get(0));
-            if (this.useIDF)
-                this.termsIDF.add(Double.valueOf(line.get(1)));
-            line = this.getLine(inputStream, ' ');
-        }  
+        try {
+			while ((line = reader.readLine()) != null)
+			{
+				String split[] = line.split(" ");
+			    this.terms.add(split[0]);
+			    if (this.useIDF)
+			        this.termsIDF.add(Double.valueOf(split[1]));
+			}
+		} catch (NumberFormatException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
         
         try {
-            inputStream.close();
+            reader.close();
         } catch (IOException ex) {
             Logger.getLogger(VSM.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -504,31 +541,35 @@ public class VSM {
     private void loadConfig(String filePath)
     {
         System.out.println("Loading Config File");
-        FileInputStream inputStream = null;
         this.terms = new ArrayList();
         this.termsIDF = new ArrayList();
         
-        try
-        {
-            inputStream = new FileInputStream(filePath);
-        }
-        catch (FileNotFoundException ex)
-        {
-            System.out.println(filePath+" is not found");
-        }
-
-        ArrayList<String> line = this.getLine(inputStream,' ');
-        while (line!=null && !line.isEmpty())
-        {
-            this.collectionSize = Integer.valueOf(line.get(0));
-            this.normalization = Boolean.valueOf(line.get(1));
-            this.useIDF = Boolean.valueOf(line.get(2));
-            this.TFOption = Integer.valueOf(line.get(3));
-            line = this.getLine(inputStream, ' ');
-        }  
+        File configFile = new File(filePath);
+        BufferedReader reader = null;
+        String line = null;
         
         try {
-            inputStream.close();
+			reader = new BufferedReader(new FileReader(configFile));			
+		} catch (FileNotFoundException e) {
+			System.out.println(filePath + " is not found");
+		}
+        
+        try {
+			while((line = reader.readLine()) != null){
+				String split[] = line.split(" ");
+				
+				this.collectionSize = Integer.valueOf(split[0]);
+				this.normalization = Boolean.valueOf(split[1]);
+				this.useIDF = Boolean.valueOf(split[2]);
+				this.TFOption = Integer.valueOf(split[3]);
+			}
+		} catch (NumberFormatException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        try {
+            reader.close();
         } catch (IOException ex) {
             Logger.getLogger(VSM.class.getName()).log(Level.SEVERE, null, ex);
         }
