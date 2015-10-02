@@ -10,7 +10,6 @@
             <groupId>edu.stanford.nlp</groupId>
             <artifactId>stanford-corenlp</artifactId>
             <version>3.5.2</version>
-            <classifier>models-chinese</classifier>
         </dependency>
     </dependencies>
     <properties>

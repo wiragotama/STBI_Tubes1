@@ -6,8 +6,9 @@
 package mainpackage;
 
 import java.util.ArrayList;
-import Model.*;
-import VSM.*;
+
+import model.*;
+import vsm.*;
 /**
  *
  * @author wiragotama

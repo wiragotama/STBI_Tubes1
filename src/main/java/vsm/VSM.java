@@ -1,4 +1,4 @@
-package VSM;
+package vsm;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,8 +14,8 @@ import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import Model.DataTokenized;
-import Model.DataTokenizedInstances;
+import model.DataTokenized;
+import model.DataTokenizedInstances;
 
 /**
  *

@@ -1,4 +1,4 @@
-package Parser;
+package parser;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -113,7 +113,7 @@ public class Parser {
     public void setRelevanceJudgements(List<String> relevanceJudgements) {
         this.relevanceJudgements = relevanceJudgements;
     }
-
+    
     public void printDocuments()
     {
         for(int i=0; i<documents.size(); i++)
