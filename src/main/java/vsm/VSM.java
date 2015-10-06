@@ -218,7 +218,7 @@ public class VSM {
         {
             for (int i=0; i<N; i++)
                 for (int j=0; j<this.collectionSize; j++)
-                    this.weightMatrix.get(i).set(j, this.weightMatrix.get(i).get(j)/maxTF);
+                    this.weightMatrix.get(i).set(j, 0.5+0.5*this.weightMatrix.get(i).get(j)/maxTF);
         }
         
         if (normalization) //normalization is counted to the terms vector
