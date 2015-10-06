@@ -121,7 +121,7 @@ public class VSM {
             return 0;
         else
         {
-            double TF =  (double) Collections.frequency(doc, term); //nor normalization
+            double TF =  (double) Collections.frequency(doc, term); //no normalization
             if (option==2) 
             {
                 if (TF>0) TF=1;
@@ -131,6 +131,7 @@ public class VSM {
             {
                 if (TF!=0)
                     TF = 1+ Math.log(TF);
+                //else, means TF is 0
             }
             return TF;
         }
@@ -186,12 +187,13 @@ public class VSM {
         this.TFOption = TFOption;
         this.weightMatrix = new ArrayList();
         
-        double maxTF = (double) Integer.MIN_VALUE; //for Augmented TF
+        double[] maxTF = new double[this.terms.size()]; //max TF for each terms in all documents
         
         //making TF-IDF matrix
         int N = this.terms.size();
         for (int i=0; i<N; i++)
         {
+            maxTF[i] = Integer.MIN_VALUE;
             ArrayList<Double> weightVector = new ArrayList();
             for (int j=0; j<this.collectionSize; j++)
             {
@@ -207,8 +209,8 @@ public class VSM {
                 else
                     weightVector.add(0.0);
                 
-                if (TF>maxTF) //for augmented TF
-                    maxTF = TF;
+                if (TF>maxTF[i]) //for augmented TF
+                    maxTF[i] = TF;
             }
            
             this.weightMatrix.add(weightVector);
@@ -216,9 +218,10 @@ public class VSM {
         
         if (TFOption==3) //augmented TF Case, devide by biggest TF in documents
         {
+            /* 0.5 + 0.5*TF(T, D) / Max TF(T, Di) for Di is all documents */
             for (int i=0; i<N; i++)
                 for (int j=0; j<this.collectionSize; j++)
-                    this.weightMatrix.get(i).set(j, 0.5+0.5*this.weightMatrix.get(i).get(j)/maxTF);
+                    this.weightMatrix.get(i).set(j, 0.5+0.5*this.weightMatrix.get(i).get(j)/maxTF[i]);
         }
         
         if (normalization) //normalization is counted to the terms vector
