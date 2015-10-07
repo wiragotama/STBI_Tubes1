@@ -187,13 +187,14 @@ public class VSM {
         this.TFOption = TFOption;
         this.weightMatrix = new ArrayList();
         
-        double[] maxTF = new double[this.terms.size()]; //max TF for each terms in all documents
+        double[] maxTF = new double[this.collectionSize]; //max TF for each terms in all documents
+        for (int j=0; j<this.collectionSize; j++)
+            maxTF[j] = Integer.MIN_VALUE;
         
         //making TF-IDF matrix
         int N = this.terms.size();
         for (int i=0; i<N; i++)
         {
-            maxTF[i] = Integer.MIN_VALUE;
             ArrayList<Double> weightVector = new ArrayList();
             for (int j=0; j<this.collectionSize; j++)
             {
@@ -209,8 +210,8 @@ public class VSM {
                 else
                     weightVector.add(0.0);
                 
-                if (TF>maxTF[i]) //for augmented TF
-                    maxTF[i] = TF;
+                if (TF>maxTF[j]) //for augmented TF
+                    maxTF[j] = TF;
             }
            
             this.weightMatrix.add(weightVector);
@@ -221,7 +222,7 @@ public class VSM {
             /* 0.5 + 0.5*TF(T, D) / Max TF(T, Di) for Di is all documents */
             for (int i=0; i<N; i++)
                 for (int j=0; j<this.collectionSize; j++)
-                    this.weightMatrix.get(i).set(j, 0.5+0.5*this.weightMatrix.get(i).get(j)/maxTF[i]);
+                    this.weightMatrix.get(i).set(j, 0.5+0.5*this.weightMatrix.get(i).get(j)/maxTF[j]);
         }
         
         if (normalization) //normalization is counted to the terms vector
