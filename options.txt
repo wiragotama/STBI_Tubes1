@@ -1,0 +1,12 @@
+documentlocation uploads/felix.jpeg
+querylocation uploads/ichec3.jpg
+relevancejudgement uploads/printer.png
+stopwordlocation uploads/90tr021.pdf
+documentTF LogarithmicTF
+documentIDF UsingIDF
+documentNormalization UsingNormalization
+documentStemming UsingStemming
+queryTF BinaryTF
+queryIDF UsingIDF
+queryNormalization NoNormalization
+queryStemming UsingStemming

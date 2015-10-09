@@ -23,10 +23,14 @@ public class DocumentRanker {
     private String queryPath;
     private String relevanceJudgmentPath;
     private String stopwordsPath;
-    private int TFOption;
-    private boolean useIDF;
-    private boolean useNormalization;
-    private boolean useStemming;
+    private int documentTFOption;
+    private boolean documentUseIDF;
+    private boolean documentUseNormalization;
+    private boolean documentUseStemming;
+    private int queryTFOption;
+    private boolean queryUseIDF;
+    private boolean queryUseNormalization;
+    private boolean queryUseStemming;
     private double threshold;
     private String toStringOutput;
 
@@ -102,28 +106,28 @@ public class DocumentRanker {
         this.relevanceJudgmentPath = relevanceJudgmentPath;
     }
 
-    public int getTFOption() {
-        return TFOption;
+    public int getDocumentTFOption() {
+        return documentTFOption;
     }
 
-    public void setTFOption(int TFOption) {
-        this.TFOption = TFOption;
+    public void setDocumentTFOption(int documentTFOption) {
+        this.documentTFOption = documentTFOption;
     }
 
-    public boolean isUseIDF() {
-        return useIDF;
+    public boolean isDocumentUseIDF() {
+        return documentUseIDF;
     }
 
-    public void setUseIDF(boolean useIDF) {
-        this.useIDF = useIDF;
+    public void setDocumentUseIDF(boolean documentUseIDF) {
+        this.documentUseIDF = documentUseIDF;
     }
 
-    public boolean isUseNormalization() {
-        return useNormalization;
+    public boolean isDocumentUseNormalization() {
+        return documentUseNormalization;
     }
 
-    public void setUseNormalization(boolean useNormalization) {
-        this.useNormalization = useNormalization;
+    public void setDocumentUseNormalization(boolean documentUseNormalization) {
+        this.documentUseNormalization = documentUseNormalization;
     }
 
     public String getStopwordsPath() {
@@ -134,12 +138,12 @@ public class DocumentRanker {
         this.stopwordsPath = stopwordsPath;
     }
 
-    public boolean isUseStemming() {
-        return useStemming;
+    public boolean isDocumentUseStemming() {
+        return documentUseStemming;
     }
 
-    public void setUseStemming(boolean useStemming) {
-        this.useStemming = useStemming;
+    public void setDocumentUseStemming(boolean documentUseStemming) {
+        this.documentUseStemming = documentUseStemming;
     }
 
     DocumentRanker(String documentPath, String queryPath, String relevanceJudgmentPath, String stopwordsPath, double threshold)
@@ -148,16 +152,20 @@ public class DocumentRanker {
         this.queryPath = queryPath;
         this.relevanceJudgmentPath = relevanceJudgmentPath;
         this.stopwordsPath = stopwordsPath;
-        this.TFOption = 1;
-        this.useIDF = true;
-        this.useNormalization = false;
-        this.useStemming = true;
+        this.documentTFOption = 1;
+        this.queryTFOption = 1;
+        this.documentUseIDF = true;
+        this.queryUseIDF = true;
+        this.documentUseNormalization = false;
+        this.queryUseNormalization = false;
+        this.documentUseStemming = true;
+        this.queryUseStemming = true;
         this.threshold = threshold;
         parser = new Parser(documentPath, queryPath, relevanceJudgmentPath);
-        documents = new Documents(documentPath, stopwordsPath, useStemming);
+        documents = new Documents(documentPath, stopwordsPath, documentUseStemming);
     }
 
-    public void buildVSM(String optionPath)
+    public void build(String optionPath)
     {
         //TODO: Bikin load options dulu di sini (baca dari filenya melvin)
 
@@ -168,9 +176,9 @@ public class DocumentRanker {
             collection.add(temp);
         }
         vsm = new VSM();
-        vsm.makeTFIDFWeightMatrix(TFOption, useIDF, useNormalization, collection);
+        vsm.makeTFIDFWeightMatrix(documentTFOption, documentUseIDF, documentUseNormalization, collection);
 
-        queries = new Queries(queryPath, stopwordsPath, useStemming);
+        queries = new Queries(queryPath, stopwordsPath, queryUseStemming);
 
         List<DocumentRank> result;
         int retrievedSize = 0;
@@ -188,7 +196,7 @@ public class DocumentRanker {
             precision = 0;
             recall = 0;
 
-            result = vsm.queryTask(queries.getQuery(q), TFOption, useIDF, useNormalization);
+            result = vsm.queryTask(queries.getQuery(q), queryTFOption, queryUseIDF, queryUseNormalization);
             for(int d=0; d<result.size(); d++)
             {
                 if(result.get(d).getSC() > threshold)
@@ -228,7 +236,7 @@ public class DocumentRanker {
     public static void main(String [] args)
     {
         DocumentRanker documentRanker = new DocumentRanker("test_collections/adi/adi.all", "test_collections/adi/query.text", "test_collections/adi/qrels.text", "custom.stopword", 0.1);
-        documentRanker.buildVSM("");
+        documentRanker.build("");
         System.out.println(documentRanker.toString());
     }
 }
