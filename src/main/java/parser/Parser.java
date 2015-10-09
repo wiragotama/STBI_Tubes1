@@ -112,7 +112,9 @@ public class Parser {
             {
                 currentLine = currentLine.toLowerCase();
                 if(currentLine.startsWith(".i") ||
-                        currentLine.startsWith(".w"))
+                   currentLine.startsWith(".w") ||
+                   currentLine.startsWith(".a") ||
+                   currentLine.startsWith(".t"))
                 {
                     currentString = currentLine;
                 }
@@ -126,6 +128,26 @@ public class Parser {
                     }
                 }
                 if(currentString.startsWith(".w") && !currentLine.startsWith(".w"))
+                {
+                    for(String word : currentLine.split(" "))
+                    {
+                        if(!word.equalsIgnoreCase(""))
+                        {
+                            currentQuery += word + " ";
+                        }
+                    }
+                }
+                if(currentString.startsWith(".t") && !currentLine.startsWith(".t"))
+                {
+                    for(String word : currentLine.split(" "))
+                    {
+                        if(!word.equalsIgnoreCase(""))
+                        {
+                            currentQuery += word + " ";
+                        }
+                    }
+                }
+                if(currentString.startsWith(".a") && !currentLine.startsWith(".a"))
                 {
                     for(String word : currentLine.split(" "))
                     {
@@ -192,7 +214,6 @@ public class Parser {
                     else if (!word.equalsIgnoreCase("") && Integer.valueOf(word) > 0 && !relevantDocumentFound && indexFound)
                     {
                         relevantDocument = Integer.valueOf(word) - 1;
-                        relevantDocumentFound = true;
                         break;
                     }
                 }
@@ -268,17 +289,13 @@ public class Parser {
 
     public static void main(String [] args)
     {
-        String documentsFilepath = "test_collections/cisi/cisi.all";
-        String queriesFilepath = "test_collections/cisi/query.text";
-        String relevanceJudgementsFilepath = "test_collections/cisi/qrels.text";
-
         Parser parser = new Parser();
-        parser.parseDocuments(documentsFilepath);
-        parser.parseQueries(queriesFilepath);
-        parser.parseRelevanceJudgements(relevanceJudgementsFilepath);
+        System.out.println("===== Test Collections CISI =====");
+        parser.parseQueries("test_collections/cisi/query.text");
+        parser.printQueries();
 
-        Parser parser1 = new Parser("test_collections/adi/adi.all", "test_collections/adi/query.text", "test_collections/adi/qrels.text");
-        parser1.printRelevanceJudgements();
-
+        System.out.println("\n===== Test Collections ADI =====");
+        parser.parseQueries("test_collections/adi/query.text");
+        parser.printQueries();
     }
 }
