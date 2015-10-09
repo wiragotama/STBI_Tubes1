@@ -220,6 +220,7 @@ public class VSM {
             /* 0.5 + 0.5*TF(T, D) / Max TF(T, Di) for Di is all documents */
             for (int i=0; i<N; i++)
                 for (int j=0; j<this.collectionSize; j++)
+<<<<<<< HEAD
                     if (this.weightMatrix.get(i).get(j)>0)
                         this.weightMatrix.get(i).set(j, 0.5+0.5*this.weightMatrix.get(i).get(j)/maxTF[j]);
         }
@@ -238,6 +239,9 @@ public class VSM {
                 else  //not use TF and IDF
                     this.weightMatrix.get(i).set(j, 0.0);
             }
+=======
+                    this.weightMatrix.get(i).set(j, 0.5+0.5*this.weightMatrix.get(i).get(j)/maxTF[j]);
+>>>>>>> a3559c0a7d32846cb26f3c14314dde68cb4f2657
         }
         
         if (normalization) //normalization is counted to the terms vector
