@@ -165,7 +165,7 @@ public class DocumentRanker {
         documents = new Documents(documentPath, stopwordsPath, documentUseStemming);
     }
 
-    public void build(String optionPath)
+    public void build()
     {
         //TODO: Bikin load options dulu di sini (baca dari filenya melvin)
 
@@ -228,6 +228,11 @@ public class DocumentRanker {
         toStringOutput += -1 + "\n";
     }
 
+    public void evaluateQuery()
+    {
+
+    }
+
     @Override
     public String toString() {
         return toStringOutput;
@@ -236,7 +241,7 @@ public class DocumentRanker {
     public static void main(String [] args)
     {
         DocumentRanker documentRanker = new DocumentRanker("test_collections/adi/adi.all", "test_collections/adi/query.text", "test_collections/adi/qrels.text", "custom.stopword", 0.1);
-        documentRanker.build("");
+        documentRanker.build();
         System.out.println(documentRanker.toString());
     }
 }
