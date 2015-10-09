@@ -316,16 +316,12 @@ public class Parser {
         parser.parseDocuments("test_collections/cisi/cisi.all");
         parser.parseQueries("test_collections/cisi/query.text");
         parser.parseRelevanceJudgements("test_collections/cisi/qrels.text");
-//        parser.printQueries();
-//        parser.printRelevanceJudgements();
         parser.printDocumentsTitle();
 
         System.out.println("\n===== Test Collections ADI =====");
         parser.parseDocuments("test_collections/adi/adi.all");
         parser.parseQueries("test_collections/adi/query.text");
         parser.parseRelevanceJudgements("test_collections/adi/qrels.text");
-//        parser.printQueries();
-//        parser.printRelevanceJudgements();
         parser.printDocumentsTitle();
     }
 }
