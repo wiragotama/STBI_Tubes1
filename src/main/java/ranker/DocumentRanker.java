@@ -185,7 +185,8 @@ public class DocumentRanker {
             vsm = new VSM();
             vsm.makeTFIDFWeightMatrix(documentTFOption, documentUseIDF, documentUseNormalization, collection);
 
-            queries = new Queries(queryPath, stopwordsPath, queryUseStemming);
+            queries = new Queries(stopwordsPath, queryUseStemming);
+            queries.processQueriesFromFile(queryPath);
             vsm.save("tfidf");
         }
         else
@@ -193,7 +194,8 @@ public class DocumentRanker {
             //queries dari input
             vsm = new VSM();
             vsm.load("tfidf");
-            
+            queries = new Queries(stopwordsPath, queryUseStemming);
+            queries.processQueryFromString(this.queryInput);
         }
         evaluateQuery();
     }
@@ -235,10 +237,12 @@ public class DocumentRanker {
             nonInterpolatedAveragePrecision = nonInterpolatedAveragePrecision / (double)parser.getRelevanceJudgements().get(q).size();
 
             toStringOutput += retrievedSize + "\n";
-            toStringOutput += precision + "\n";
-            toStringOutput += recall + "\n";
-            toStringOutput += nonInterpolatedAveragePrecision + "\n";
-
+            if (isExperiment) {
+                toStringOutput += precision + "\n";
+                toStringOutput += recall + "\n";
+                toStringOutput += nonInterpolatedAveragePrecision + "\n";
+            }
+            
             for(int i=0; i<retrievedSize; i++)
             {
                 toStringOutput += i + "\n";

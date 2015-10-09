@@ -52,7 +52,8 @@ public class MainProgram {
         tfidf.makeTFIDFWeightMatrix(1,false,false,collection);
         //tfidf.printWeightMatrix();
 
-        Queries queries = new Queries("test_collections/adi/query.text", "custom.stopword", true);
+        Queries queries = new Queries("custom.stopword", true);
+        queries.processQueriesFromFile("test_collections/adi/query.text");
 
         List<DocumentRank> res = tfidf.queryTask(queries.getQuery(0),1,true,false);
         for (int i=0; i<res.size(); i++)
