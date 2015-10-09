@@ -149,32 +149,19 @@ public class DocumentRanker {
         this.documentUseStemming = documentUseStemming;
     }
 
-    DocumentRanker()
-    {
-        /*this.documentPath = documentPath;
-        this.queryPath = queryPath;
-        this.relevanceJudgmentPath = relevanceJudgmentPath;
-        this.stopwordsPath = stopwordsPath;
-        this.documentTFOption = 1;
-        this.queryTFOption = 1;
-        this.documentUseIDF = true;
-        this.queryUseIDF = true;
-        this.documentUseNormalization = false;
-        this.queryUseNormalization = false;
-        this.documentUseStemming = true;
-        this.queryUseStemming = true;
-        this.threshold = threshold;
-        parser = new Parser(documentPath, queryPath, relevanceJudgmentPath);
-        documents = new Documents(documentPath, stopwordsPath, documentUseStemming);*/
-    }
-
+    /**
+     * Build the document ranker based on the options from the GUI
+     */
     public void build()
     {
+        // baca option dari gui
         readOption();
+
+        // buat parser berdasarkan collection set, test set, dan relevance judgement path
+        parser = new Parser(documentPath, queryPath, relevanceJudgmentPath);
 
         if(isExperiment)
         {
-            parser = new Parser(documentPath, queryPath, relevanceJudgmentPath);
             documents = new Documents(documentPath, stopwordsPath, documentUseStemming);
 
             DataTokenizedInstances collection = new DataTokenizedInstances();
@@ -184,7 +171,6 @@ public class DocumentRanker {
             }
             vsm = new VSM();
             vsm.makeTFIDFWeightMatrix(documentTFOption, documentUseIDF, documentUseNormalization, collection);
-
             queries = new Queries(stopwordsPath, queryUseStemming);
             queries.processQueriesFromFile(queryPath);
             vsm.save("tfidf");
@@ -197,9 +183,13 @@ public class DocumentRanker {
             queries = new Queries(stopwordsPath, queryUseStemming);
             queries.processQueryFromString(this.queryInput);
         }
+        // evaluate query sesuai dengan option dari gui
         evaluateQuery();
     }
 
+    /**
+     * Evaluate query and return the document that has been ranked based on similarity to query
+     */
     private void evaluateQuery()
     {
         List<DocumentRank> result;
@@ -210,6 +200,7 @@ public class DocumentRanker {
         double nonInterpolatedAveragePrecision = 0;
         toStringOutput = "";
 
+        // Evaluasi setiap document yang diretrieve dengan relevance judgment pada setiap query
         for(int q=0; q<queries.getQueries().size(); q++)
         {
             retrievedSize = 0;
@@ -224,17 +215,19 @@ public class DocumentRanker {
                 if(result.get(d).getSC() > threshold)
                 {
                     retrievedSize ++;
-                    if(parser.getRelevanceJudgements().get(q).contains(result.get(d).getDocNum()))
-                    {
-                        relevanceSize ++;
-                        nonInterpolatedAveragePrecision = nonInterpolatedAveragePrecision + ((double)relevanceSize / (double)retrievedSize);
-                    }
+                    if (isExperiment)
+                        if(parser.getRelevanceJudgements().get(q).contains(result.get(d).getDocNum())) {
+                            relevanceSize++;
+                            nonInterpolatedAveragePrecision = nonInterpolatedAveragePrecision + ((double) relevanceSize / (double) retrievedSize);
+                        }
                 }
             }
 
-            precision = (double)relevanceSize / (double)retrievedSize;
-            recall = (double)relevanceSize / (double)parser.getRelevanceJudgements().get(q).size();
-            nonInterpolatedAveragePrecision = nonInterpolatedAveragePrecision / (double)parser.getRelevanceJudgements().get(q).size();
+            if (isExperiment) {
+                precision = (double) relevanceSize / (double) retrievedSize;
+                recall = (double) relevanceSize / (double) parser.getRelevanceJudgements().get(q).size();
+                nonInterpolatedAveragePrecision = nonInterpolatedAveragePrecision / (double) parser.getRelevanceJudgements().get(q).size();
+            }
 
             toStringOutput += retrievedSize + "\n";
             if (isExperiment) {
@@ -242,16 +235,19 @@ public class DocumentRanker {
                 toStringOutput += recall + "\n";
                 toStringOutput += nonInterpolatedAveragePrecision + "\n";
             }
-            
+
             for(int i=0; i<retrievedSize; i++)
             {
-                toStringOutput += i + "\n";
+                toStringOutput += result.get(i).getDocNum() + "\n";
                 toStringOutput += parser.getDocumentsTitle().get(result.get(i).getDocNum()) + "\n";
             }
         }
         toStringOutput += -1 + "\n";
     }
 
+    /**
+     * Read Option for TF, IDF, Normalization, Stemming, and Experiment / Interactive from GUI
+     */
     private void readOption()
     {
         isExperiment=true;
@@ -341,14 +337,10 @@ public class DocumentRanker {
     }
 
     @Override
+    /**
+     * Print the result
+     */
     public String toString() {
         return toStringOutput;
-    }
-
-    public static void main(String [] args)
-    {
-        //DocumentRanker documentRanker = new DocumentRanker("test_collections/adi/adi.all", "test_collections/adi/query.text", "test_collections/adi/qrels.text", "custom.stopword", 0.1);
-        //documentRanker.build();
-        //System.out.println(documentRanker.toString());
     }
 }

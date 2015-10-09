@@ -79,11 +79,4 @@ public class Queries {
 	public void clear(){
 		this.queries.clear();
 	}
-	
-	public static void main(String[] args){
-		Queries queries = new Queries("custom.stopword", true);
-		queries.processQueriesFromFile("test_collections/cisi/query.text");
-		queries.processQueryFromString("What problems and concerns are there in making up descriptive titles? What difficulties are involved in automatically retrieving articles from approximate titles?  What is the usual relevance of the content of articles to their titles?");
-		System.out.println(queries);
-	}
 }

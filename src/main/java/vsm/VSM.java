@@ -323,7 +323,7 @@ public class VSM {
      */
     private void saveToInvertedFile(String filePath)
     {
-        System.out.println("Saving Inverted File");
+//        System.out.println("Saving Inverted File");
         try {
             PrintWriter writer = new PrintWriter(filePath, "UTF-8");
             int N = this.terms.size();
@@ -423,7 +423,7 @@ public class VSM {
      */
     private void saveIDF(String filePath)
     {
-        System.out.println("Saving Terms IDF");
+//        System.out.println("Saving Terms IDF");
         try {
             PrintWriter writer = new PrintWriter(filePath, "UTF-8");
             int N = this.terms.size();
@@ -491,7 +491,7 @@ public class VSM {
      */
     private void saveConfig(String filePath)
     {
-        System.out.println("Saving Configuration");
+//        System.out.println("Saving Configuration");
         try {
             PrintWriter writer = new PrintWriter(filePath, "UTF-8");
             writer.println(collectionSize+" "+normalization+" "+useIDF+" "+TFOption);

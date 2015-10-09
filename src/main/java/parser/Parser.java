@@ -12,11 +12,29 @@ import java.util.Objects;
  * Created by timothy.pratama on 02-Oct-15.
  */
 public class Parser {
+    /**
+     * Collections set
+     */
     private List<String> documents;
+    /**
+     * Queries Set
+     */
     private List<String> queries;
+    /**
+     * Document's Title
+     */
     private List<String> documentsTitle;
+    /**
+     * Relevance Judgement
+     */
     private List<List<Integer>> relevanceJudgements;
 
+    /**
+     * Build parser for given data collection, test set, and relevance judgement
+     * @param documentsFilepath
+     * @param queriesFilepath
+     * @param relevanceJudgmentsFilepath
+     */
     public Parser (String documentsFilepath, String queriesFilepath, String relevanceJudgmentsFilepath)
     {
         parseDocuments(documentsFilepath);
@@ -31,11 +49,15 @@ public class Parser {
         relevanceJudgements = new ArrayList<>();
     }
 
+    /**
+     * Parse document from a file
+     * @param filepath
+     */
     public void parseDocuments(String filepath)
     {
         documentsTitle = new ArrayList<>();
         documents = new ArrayList<>();
-        String currentString = "";
+        String currentString = ""; // state untuk tipe input yang sedang dibaca
         String currentDocument = "";
         String currentDocumentTitle = "";
         String title = "";
@@ -103,10 +125,14 @@ public class Parser {
         }
     }
 
+    /**
+     * Parse query from a file
+     * @param filepath
+     */
     public void parseQueries(String filepath)
     {
         queries = new ArrayList<>();
-        String currentString = "";
+        String currentString = ""; // state untuk tipe input yang sedang dibaca
         String currentQuery = "";
 
         try
@@ -178,6 +204,10 @@ public class Parser {
         }
     }
 
+    /**
+     * Parse Relevance Judgement from a file
+     * @param filepath
+     */
     public void parseRelevanceJudgements(String filepath)
     {
         relevanceJudgements = new ArrayList<>();
@@ -300,23 +330,5 @@ public class Parser {
                 System.out.printf("--> %d\n",relevanceJudgements.get(i).get(j));
             }
         }
-    }
-
-    public static void main(String [] args)
-    {
-        Parser parser = new Parser();
-        System.out.println("===== Test Collections CISI =====");
-        parser.parseDocuments("test_collections/cisi/cisi.all");
-        parser.parseQueries("test_collections/cisi/query.text");
-        parser.parseRelevanceJudgements("test_collections/cisi/qrels.text");
-        parser.printDocumentsTitle();
-
-        System.out.println("\n===== Test Collections ADI =====");
-        parser.parseDocuments("test_collections/adi/adi.all");
-        parser.parseQueries("test_collections/adi/query.text");
-        parser.parseRelevanceJudgements("test_collections/adi/qrels.text");
-//        parser.printQueries();
-//        parser.printRelevanceJudgements();
-        parser.printDocumentsTitle();
     }
 }

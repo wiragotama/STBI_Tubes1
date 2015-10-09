@@ -88,10 +88,4 @@ public class Documents {
 		
 		return terms;
 	}
-	
-	public static void main(String[] args){
-		Documents docs = new Documents("test_collections/cisi/cisi.all", "custom.stopword", true);
-		System.out.println(docs);
-		System.out.println(docs.getTerms());
-	}
 }
