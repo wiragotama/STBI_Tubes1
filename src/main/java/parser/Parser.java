@@ -186,14 +186,7 @@ public class Parser {
         {
             BufferedReader br = new BufferedReader(new FileReader(filepath));
             String currentLine = br.readLine();
-            int maxIndex = 0;
-
-            while(currentLine != null)
-            {
-                String words[] = currentLine.split(" ");
-                maxIndex = Integer.parseInt(words[0]);
-                currentLine = br.readLine();
-            }
+            int maxIndex = queries.size();
 
             br = new BufferedReader(new FileReader(filepath));
             currentLine = br.readLine();
@@ -322,6 +315,8 @@ public class Parser {
         parser.parseDocuments("test_collections/adi/adi.all");
         parser.parseQueries("test_collections/adi/query.text");
         parser.parseRelevanceJudgements("test_collections/adi/qrels.text");
+//        parser.printQueries();
+//        parser.printRelevanceJudgements();
         parser.printDocumentsTitle();
     }
 }

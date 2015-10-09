@@ -40,6 +40,10 @@ public class VSM {
     private int collectionSize;
     private boolean normalization;   
     private boolean useIDF;
+
+    /**
+     * 0:no TF, 1:Raw TF, 2:Binary TF, 3:Augmented TF, 4:Logarithmic TF
+     */
     private int TFOption;
     private ArrayList<Double> termsIDF;
     
