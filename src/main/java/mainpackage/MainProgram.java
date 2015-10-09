@@ -5,14 +5,15 @@
  */
 package mainpackage;
 
-import java.util.ArrayList;
+import model.DataTokenized;
+import model.DataTokenizedInstances;
+import progs.Documents;
+import progs.Queries;
+import vsm.DocumentRank;
+import vsm.VSM;
+
 import java.util.Arrays;
 import java.util.List;
-
-import model.*;
-import vsm.*;
-import parser.*;
-import progs.*;
 /**
  *
  * @author wiragotama
@@ -55,7 +56,9 @@ public class MainProgram {
 
         List<DocumentRank> res = tfidf.queryTask(queries.getQuery(0),1,true,false);
         for (int i=0; i<res.size(); i++)
-            System.out.println(res.get(i).getDocNum()+" "+res.get(i).getSC());
+        {
+            System.out.println(res.get(i).getDocNum() + " " + res.get(i).getSC());
+        }
         
         //contoh save
         //tfidf.save("tfidf");
