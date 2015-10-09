@@ -28,6 +28,23 @@ public class DocumentRanker {
     private boolean useNormalization;
     private boolean useStemming;
     private double threshold;
+    private String toStringOutput;
+
+    public String getToStringOutput() {
+        return toStringOutput;
+    }
+
+    public void setToStringOutput(String toStringOutput) {
+        this.toStringOutput = toStringOutput;
+    }
+
+    public double getThreshold() {
+        return threshold;
+    }
+
+    public void setThreshold(double threshold) {
+        this.threshold = threshold;
+    }
 
     public Parser getParser() {
         return parser;
@@ -161,6 +178,7 @@ public class DocumentRanker {
         double precision = 0;
         double recall = 0;
         double nonInterpolatedAveragePrecision = 0;
+        toStringOutput = "";
 
         for(int q=0; q<queries.getQueries().size(); q++)
         {
@@ -169,6 +187,7 @@ public class DocumentRanker {
             nonInterpolatedAveragePrecision = 0;
             precision = 0;
             recall = 0;
+
             result = vsm.queryTask(queries.getQuery(q), TFOption, useIDF, useNormalization);
             for(int d=0; d<result.size(); d++)
             {
@@ -187,24 +206,29 @@ public class DocumentRanker {
             recall = (double)relevanceSize / (double)parser.getRelevanceJudgements().get(q).size();
             nonInterpolatedAveragePrecision = nonInterpolatedAveragePrecision / (double)parser.getRelevanceJudgements().get(q).size();
 
-            System.out.println(retrievedSize);
-            System.out.println(precision);
-            System.out.println(recall);
-            System.out.println(nonInterpolatedAveragePrecision);
+            toStringOutput += retrievedSize + "\n";
+            toStringOutput += precision + "\n";
+            toStringOutput += recall + "\n";
+            toStringOutput += nonInterpolatedAveragePrecision + "\n";
 
             for(int i=0; i<retrievedSize; i++)
             {
-                System.out.println(i);
-                System.out.println(parser.getDocumentsTitle().get(result.get(i).getDocNum()));
+                toStringOutput += i + "\n";
+                toStringOutput += parser.getDocumentsTitle().get(result.get(i).getDocNum()) + "\n";
             }
-
-            //TODO: Ouput hasil
         }
+        toStringOutput += -1 + "\n";
+    }
+
+    @Override
+    public String toString() {
+        return toStringOutput;
     }
 
     public static void main(String [] args)
     {
         DocumentRanker documentRanker = new DocumentRanker("test_collections/adi/adi.all", "test_collections/adi/query.text", "test_collections/adi/qrels.text", "custom.stopword", 0.1);
         documentRanker.buildVSM("");
+        System.out.println(documentRanker.toString());
     }
 }

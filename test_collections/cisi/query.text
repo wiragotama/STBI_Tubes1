@@ -67,7 +67,7 @@ retrieval?  What will be the extent of their use in the future?
 .I 17
 .W
 Means of obtaining large volume, high speed, customer usable            
-information retrieval output.
+information retrieval toStringOutput.
 .I 18
 .W
 What methods are there for encoding, automatically matching,            
@@ -645,7 +645,7 @@ Answer-Passage Retrieval by Text Searching
 O'Connor, J.
 .W
     Passage retrieval (already operational for lawyers) has advantages in
-output form opver references retrieval and is economically feasible.
+toStringOutput form opver references retrieval and is economically feasible.
 Previous experiments in passage retrieval for scientists have demonstrated
 recall and false retrieval rates as good or better than those of present
 reference retrieval services.  The present experiment involved a greater
@@ -771,7 +771,7 @@ Woods, W.A.
 (CATN), is prescribed.  CATN's permit a decomposition of complex language
 understanding behavior into a sequence of cooperating ATN's with separate
 domain of responsibility, where each stage (called an ATN transducer)
-takes its input from the output of the previous stage.  The paper includes
+takes its input from the toStringOutput of the previous stage.  The paper includes
 an extensive discjussion of the principles of factoring-conceptual
 factoring reduces the number of places that a given fact needs to be
 represented in a grammar, and hypothesis factoring reduces the number

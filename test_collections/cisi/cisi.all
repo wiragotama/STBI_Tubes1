@@ -6867,12 +6867,12 @@ Artandi, Susan
 .A
 Wolf, Edward H.
 .W
-   Work concerned with the statistical evaluation of the output of the MEDICO 
+   Work concerned with the statistical evaluation of the toStringOutput of the MEDICO
 automatic indexing method is described.. The statistical test were designed
 primarily to examine the validity of the assumptions which formed the basis of 
 the algorithms developed for the automatic computation of weights and for the 
 automatic generation of links between index terms and modifiers.. This 
-evaluation also includes a comparison of the output generated from full text 
+evaluation also includes a comparison of the toStringOutput generated from full text
 and from the processing of the abstracts or summaries of the same articles..
 .X
 420	2	77
@@ -9279,17 +9279,17 @@ Cole, Stephen
 .A
 Cole, Jonathan R.
 .W
-   The relationship between the quantity and quality of scientific output of 
+   The relationship between the quantity and quality of scientific toStringOutput of
 120 university physicists was studied.. Although these two variables are highly
 correlated, some physicists produce many papers of little significance and 
 other produce a few papers of great significance.. The responses of the 
 community of physicists to these distinct patterns of research publication were
-investigated.. Quality of output is more significant than quantity in eliciting
+investigated.. Quality of toStringOutput is more significant than quantity in eliciting
 recognition through the receipt of awards, appointment to prestigious academic
 departments, and being widely known to one's colleagues.. The reward system 
 operates to encourage creative scientists to be highly productive, to divert 
 the energies of less creative physicists into other channels, and to produce a 
-higher correlation between quantity and quality of output in the top departments 
+higher correlation between quantity and quality of toStringOutput in the top departments
 than in the weaker departments..
 .X
 456	2	102
@@ -9543,7 +9543,7 @@ Zuckerman, Harriet
 .W
    Nobel laureates in science publish more and are more apt to collaborate than 
 a matched sample of scientists.. Interviews with 41 of 55 laureates and 
-comparison of their research output with the output of the matched sample 
+comparison of their research toStringOutput with the toStringOutput of the matched sample
 indicate that these patterns hold at every stage of the life-work-cycle.. As
 laureates report and as their publications collaborate, they exercise noblesse
 oblige in arranging co-authorship in collaborative publications.. Receipt of 
@@ -9661,7 +9661,7 @@ mailed to university physicists, the conditions making for high visibility of a
 scientists' work are studied.. Four strong determinates of visibility were
 found: the quality of work, as measured by citations; the honorific awards 
 received for work in physics; the prestige of the physics department to which
-the scientist belong; and speciality.. Quantity of output, age, and 
+the scientist belong; and speciality.. Quantity of toStringOutput, age, and
 name-ordering patterns on collaborative papers have no independent effect on 
 visibility.. Just as some physicists may be easily seen (i.e., have high 
 visibility), other are in positions where they may easily see.. This latter
@@ -10600,7 +10600,7 @@ The Problem of assessing the "quality" of scientific
 publications has long been a major impediment to
 progress in the sociology of science.  Most researchers
 have typically paid homage to the belief that quantity of
-output is not the equivalent of quality and have then gone
+toStringOutput is not the equivalent of quality and have then gone
 ahead and used publication counts anyway (Coler, 1963;
 Crane, 1965; Price, 1963; Wilson, 1964).  There seemed
 to be no practicable way to measure the quality of large
@@ -13732,7 +13732,7 @@ computer search.  The computer can also search for molecular
 formulae and for Chemical Abstracts registry numbers of all
 compounds included in the abstracts.  ASCA in its original form
 was based on citations: the search profile can consist of a list of
-references to older work, and the output is then a list of new papers
+references to older work, and the toStringOutput is then a list of new papers
 citing this work.  Last spring ASCA introduced a 'term search', which
 is a search for words in the titles of current papers and is therefore
 analogous to a CT search.
@@ -24367,7 +24367,7 @@ chemical engineers to meet their information needs.
 of chemical and chemical engineering knowledge and a variety of timely,
 special-subject alerting services, simultaneously providing a mechanized
 match and retrieval system that is sufficiently flexible to meet the varied
-needs of information users.  The output will be supplied in whatever form
+needs of information users.  The toStringOutput will be supplied in whatever form
 best suits the user's needs - printed pages, microfilm, or computer-searchable
 tapes.  Tapes and search programs will be usable on the customer's computer,
 or CAS will provide custom matches of its own computer files.
@@ -28820,7 +28820,7 @@ it.  This situation is, of course, well known.
   Saying that a system should cater to an optimal performance
 implies that the reward varies with different circumstances.
 That is, there may always be some customers who will not agree
-that the system's output is satisfactory.  However, these
+that the system's toStringOutput is satisfactory.  However, these
 should be relatively few.  In the case of an information
 retrieval system, let us consider one whose function is to
 furnish a reference list as a reaction to a question.  
@@ -32438,7 +32438,7 @@ to be published, and over 30 years, from 1907 to 1938, for the first million
 to be abstracted in Chemical Abstracts.  We are now at the stage where one
 million papers have been abstracted in a five-year period - 1962-1967 - and
 before 1975 the point will have been reached where one million papers, equal
-to the output of the whole pre-war generation of chemists, will be
+to the toStringOutput of the whole pre-war generation of chemists, will be
 published and abstracted in a single year. The first scientific serial began
 publication in 1665.  Some 290 years later, in 1956, the Science Museum
 Library was receiving 9,000 current scientific serials.  Within only a
@@ -32837,7 +32837,7 @@ concerned with new forms, new media, and new methods for providing information
 services.  Among these organizations are publishers, computer software and time-
 sharing companies, micrographic firms, libraries, information centers, and 
 consultants.  The common interest of these diverse organizations is in service
-based on storage and representation of structured information with output on a
+based on storage and representation of structured information with toStringOutput on a
 recurring or demand basis.  The concept of information as used throughout this
 book is defined as data organized into a collection of facts and most often
 recorded in two basic forms: 1) textual data or literature, and 2) numeric
@@ -34790,7 +34790,7 @@ for data that could be used to determine changes with time.
 In addition, all publications generated during 1961-1962 by
 the extramural and intramural research programs of the
 National Institutes of Health (NIH) were analyzed as samples
-of the current document output of US research.
+of the current document toStringOutput of US research.
 .X
 415	2	395
 505	2	395
@@ -36824,7 +36824,7 @@ the highest probable profits, the largest probable number of successes, and the
 greatest probable profit per dollar spent.. Departmental goals may restrict the
 manager to some maximum budget, a minimum number of projects to be worked on, 
 and minimum levels of accomplishment on specific projects.. In a sense, then, 
-the research manager is faced with a constrained multiple-output production 
+the research manager is faced with a constrained multiple-toStringOutput production
 problem: how much to spend on which project and how much to spend overall.. 
 This  paper shows how a slight modification of Hess' approach to project
 selection  and an analogy to the theoretical economics of a multiple-product
@@ -43788,7 +43788,7 @@ Belton, M.
 subject indexes are described.. The preparation of an index to the third 
 edition of the SMRE Bibliography has enabled the technique to be assessed in a 
 practical situation.. Titles from 1700 documents included in the bibliography 
-were edited to provide input to the program, and the output recorded on a 
+were edited to provide input to the program, and the toStringOutput recorded on a
 micro-film/hard-copy recorder in upper case alone..
    Further developments now in hand are indicated and criteria for assessing the 
 suitability of the technique relative to other index-production techniques are 
@@ -44055,8 +44055,8 @@ bases..
    An attempt to make retrospective searching economically feasible has led to
 formulation of different search techniques.. It is suggested that the search 
 procedure should be designed to minimize computation time at the expense of 
-convenience in the form of output, but that facilities should be included so 
-that the user who is willing to play the additional cost may receive output in 
+convenience in the form of toStringOutput, but that facilities should be included so
+that the user who is willing to play the additional cost may receive toStringOutput in
 a more convenient form..
    In recognition of the fact that the form of search question should be 
 dependent on the vocabulary of the data base, a program has been developed to 
@@ -46140,7 +46140,7 @@ Heaps, H. S.
 .W
    Retrospective search of large document data bases requires development of 
 special techniques for automatic compression of data and minimization of the 
-number of input-output operations to the computer accessible files.. Also, the 
+number of input-toStringOutput operations to the computer accessible files.. Also, the
 computer program should be designed to require a relatively small amount of 
 internal memory..
    The present paper contains a description of the structure of a program that 
@@ -46152,7 +46152,7 @@ index greatly reduces search time, and a storage management system enables long
 strings to be processed with use of a limited amount of internal storage..
 Creation of "reduced" files and tables is an important feature of a program; it
 allows the files needed only by specific phases of the program to be designed 
-to use a relatively small amount of internal storage and input-output time..
+to use a relatively small amount of internal storage and input-toStringOutput time..
 .X
 416	2	511
 416	2	511
@@ -46465,7 +46465,7 @@ a directory and character string type of the structure..
 any degree of nesting; search terms may be any data element on a data base; 
 search terms may be single words, multi-word terms, phrases, or term fragments;
 full truncation capabilities; optional sort of author, citation number, or 
-weight; and optional printing of output on 5x8 cards, multilith masters, paper,
+weight; and optional printing of toStringOutput on 5x8 cards, multilith masters, paper,
 or tape.. User aids were developed for each data base to assist in profile and
 monitoring.. They include: search manuals, truncation guides, term frequency 
 list and KLIC indexes..
@@ -47349,7 +47349,7 @@ automated system must chose single words or phrases (dependent upon context)
 rapidly and economically.. The automation of DDC's indexing has been 
 machine-aided from its inception.. A machine-aided indexing (MAI) system is 
 described that indexes one million words of text per hour of CPU time.. 
-Grammatical errors do not exceed five per cent of the output, so human 
+Grammatical errors do not exceed five per cent of the toStringOutput, so human
 screening is satisfactorily low.. The system could potentially scale up to an
 operational size of 10 million words of text per year - the equivalent of a
 dozen bibles or a third of the Encyclopedia Britannica.. In a batch mode, the
@@ -56025,7 +56025,7 @@ cost-effectiveness of retrieval and dissemination systems are identified..
 Various aspects of system operation that are susceptible to cost-effectiveness
 analysis are discussed, including system coverage, indexing policies and
 procedures, system vocabulary, searching procedures, and mode of interaction
-between system and user.. Possible tradeoffs between input and output costs,
+between system and user.. Possible tradeoffs between input and toStringOutput costs,
 and the effects of these tradeoffs on cost-effectiveness are presented.
 .X
 408	2	591
@@ -56770,7 +56770,7 @@ examined.. A model of a retrieval system, together with a set of measures
 and a methodology for performance testing were developed.. In the main
 experiment the effect on performance of the following variables
 was tested:  sources of indexing, indexing languages, coding schemes,
-question analyses, search strategies and formats of output.. In
+question analyses, search strategies and formats of toStringOutput.. In
 addition, a series of separate experiments was carried out to investigate
 the problems of controls in experimentation with IR systems.. The main
 conclusions:  the human factor appears to be the main variable in all
@@ -57708,7 +57708,7 @@ greater applicability of title-terms offsets their relative paucity.. The
 title-searching technique is tested using queries put to MEDLARS.. These 
 queries were not specially solicited for the test.. Title searching is compared
 with the standard MEDLARS index term search and with an index term search with 
-fixed output size.. For equal output sizes, Title searching retrieves 4 
+fixed toStringOutput size.. For equal toStringOutput sizes, Title searching retrieves 4
 relevant references for every 5 retrieved by index term searching.. Thus the 
 relative retrieval efficiency of Title and Index terms is so close that the 
 choice of one method or the other must be primarily on economic grounds..
@@ -58847,13 +58847,13 @@ Salton, G.
 with a collection of documents chosen independently of either SMART or MEDLARS
 indicate that a simple automatic extraction of keywords from document abstracts
 produces a 30 to 40 percent loss compared with MEDLARS indexing.. A replacement
-of the unranked Boolean searches used in MEDLARS by the standard ranked output 
+of the unranked Boolean searches used in MEDLARS by the standard ranked toStringOutput
 normally provided by SMART reduces the loss to between 15 and 20 percent.. When
 automatically generated word control list or a thesaurus is used as part of the 
 SMART analysis, the results are comparable in effectiveness to those obtained 
 by the intellectual MEDLARS indexing.. Finally, the incorporation of user 
 feedback procedures into SMART furnishes an improvement over the normal MEDLARS 
-output of 15 to 30 percent.. 
+toStringOutput of 15 to 30 percent..
    One concludes again that no technical justification exists for maintaining 
 controlled, manual indexing in operational retrieval environments..
 .X
@@ -61503,7 +61503,7 @@ On Selecting a Measure of Retrieval Effectiveness
 Cooper, William S.
 .W
    It is argued that a user's subjective evaluation of the personal
-utility of a retrieval system's output to him, if it could be properly
+utility of a retrieval system's toStringOutput to him, if it could be properly
 quantified, would be a near-ideal measure of retrieval effectiveness..
 A hypothetical methodology is presented for measuring this utility by
 means of an elicitation procedure.. Because the hypothetical methodology
@@ -63565,7 +63565,7 @@ retrieved.. An "answer-passage" is a passage which is either answer-providing
 or "answer-indicative," i.e., it permits inferring that the document 
 containing it is answer-providing.. In most cases answer-sentences, i.e., 
 single-sentence answer-passages, are retrieved.. This has great advantages
-for screening retrieval output..
+for screening retrieval toStringOutput..
    Two new automatic procedures for measuring closeness of relation
 between clue words in a sentence are described.. One approximates
 syntactic closeness by counting the number of intervening "syntactic
@@ -66744,7 +66744,7 @@ documents that would not otherwise have been selected..
    Finally, the paper suggests an interpretation of the whole library
 problem as one where the request is considered as a clue on the basis of
 which the library system makes a concatenated statistical inference
-in order to provide as an output an ordered list of those documents
+in order to provide as an toStringOutput an ordered list of those documents
 which most probably satisfy the information needs of the user..
 .X
 419	2	660
@@ -69513,7 +69513,7 @@ fairly broad class of compounds.  An associated front end allows a chemist to
 communicate with the programs by drawing structures on a Rand Tablet.  The
 WLN generation programs accept connection table input, either from a previously
 existing file or generated from the Rand Tablet drawing.  The programs recognize
-situations which they cannot handle - the output is thus either correct WLN
+situations which they cannot handle - the toStringOutput is thus either correct WLN
 or a message by which the programs acknowledge their limitations.  In general,
 correct WLN will be produced for any compound containing not more than one
 nonbenzene ring.  Work is under way to extend this to polycyclic fused ring 
@@ -70478,7 +70478,7 @@ Starke, A.C.
   The mechanization of chemical information retrieval systems until now has been
 limited to those organizations that have access to extensive computer 
 facilities.  Now, small, low-cost computers, such as IBM's 1130 or DEC's PDP-11,
-are available with input/output capacities that make them suitable for SDI
+are available with input/toStringOutput capacities that make them suitable for SDI
 and retrospective searching  on any of the many commercially available data
 bases.  Such a machine, located at the New England Research Application Center 
 (NERAC), is described and the problems of using it for chemical information
@@ -71385,7 +71385,7 @@ for registering chemical substances.  The previous format for listing atoms
 and bonds has been modified so that each ring system is now separately 
 identified, and this ring-system identifier is used in the record for each
 substance that contains that ring.  These modifications support CAS nomenclature
-derivation and also a computer-based structure output system.  The general
+derivation and also a computer-based structure toStringOutput system.  The general
 design of Registry III, which involves a structure record of cyclic and acyclic
 segments, is presented.
 .X
@@ -85375,7 +85375,7 @@ both of which contain full digests in addition to titles..
 data-bases, on the retrieval efficiency of profiles searched against them.. 
 Fifty questions from industrial and government research organizations were used 
 in the experiment.. Search profiles corresponding to these questions were
-constructed for searching against each database, output was assessed for 
+constructed for searching against each database, toStringOutput was assessed for
 relevance by users, and profile performance figures (precision and recall 
 ratios) were calculated for each profile.. The overall retrieval efficiency of
 profiles searched against data-bases containing titles only,
@@ -88737,7 +88737,7 @@ Skolnic, Herman
    A new linear notation system is described which was designed to have a 
 one-to-one correspondence with the chemical structures represented by the 
 notations.. Each notation is unique and unambiguous, yet simple and compatible 
-with computer input and output characters.. The symbols used in the notation 
+with computer input and toStringOutput characters.. The symbols used in the notation
 system denote carbon in terms of bounds and attached hydrogen(s).. The notation 
 system is illustrated with acyclic, carbocyclic, and heterocyclic examples..
 .X
@@ -92835,9 +92835,9 @@ Gibson, Liz
    The BIBCON file management system, designed for use on IBM 360 system 
 equipment, performs two basic functions: (1) it creates MARC structured, 
 bibliographic records from untagged input data; (2) from these records it 
-produces page image output for book catalogs.. The system accepts data from
-several different input devices and can produce a variety of output formats by 
-line printer, photocomposition, or computer output microform (COM)..
+produces page image toStringOutput for book catalogs.. The system accepts data from
+several different input devices and can produce a variety of toStringOutput formats by
+line printer, photocomposition, or computer toStringOutput microform (COM)..
 .X
 529	2	880
 530	2	880
@@ -93909,7 +93909,7 @@ of different calibre contribute to the progress of science.
 the number of names, in the decennial index of Chemical Abstracts   
 1907-1916, against which appeared 1, 2, 3 . . . . entries.  Names
 of firms (e.g. Aktiengesellschaft, etc.) were omitted from reckoning,
-since they represent the output, not of a single individual, but of an
+since they represent the toStringOutput, not of a single individual, but of an
 unknown number of persons.  The letters A and B of the alphabet
 only were covered.  These were treated both separately and in the
 aggregate, with the results shown in the table and in figures 1 and 2
@@ -94127,7 +94127,7 @@ collection.. The question is asked: Of index terms assigned to documents, which
 function most effectively in retrieval, the most term or popular terms, or those
 which are used relatively infrequently? The experiment is a retrieval experiment
 and uses the Cranfield-Salton data.. Breadth of indexing is varied by 
-nonrandomly deleting terms from documents.. Retrieval output is evaluated using 
+nonrandomly deleting terms from documents.. Retrieval toStringOutput is evaluated using
 the Expected Search Length measure of retrieval effectiveness as well as the 
 usual precision and recall.. The Wilcoxen Test is used to determine the 
 statistical significance of the different indexings.. The results show that the 
@@ -94400,7 +94400,7 @@ Hodges, B. J.
 .W
    An on_line cataloging pilot project for two elementary school is discussed..
 The system components are 2740 terminals, upper-lower-case input, IBM's FASTER
-generalized software package, and usual cards/labels output.. Reasons for 
+generalized software package, and usual cards/labels toStringOutput.. Reasons for
 choosing FASTER, software and hardware features, operating procedures, system
 performance and costs are detailed. Future expansion to cataloging 100,000 
 annual K-12 acquisitions, on-line circulation, retrospective conversion, and 
@@ -99056,7 +99056,7 @@ Ramist, Leonard E.
 Bommer, Michael R. W.
 .W
    For optimal allocations of limited funds, it is necessary for libraries to 
-develop measures of output.. Various forms of user exposure to documents are
+develop measures of toStringOutput.. Various forms of user exposure to documents are
 discussed in an effort to develop such measures for public libraries.. It is
 suggested that the actual method of accounting  be used to compare such measures
 with costs, and an illustrative computation is presented.. It is shown how size 
@@ -113375,7 +113375,7 @@ Ovchinnikov, V.G.
 It is suggested that the thesaurus be considered a hierarchical system for
 classifying factors.
 The problem of automatic construction of thesaurus is posed.
-A formal description "input" and "output" of this problem is given; a series
+A formal description "input" and "toStringOutput" of this problem is given; a series
 of classificational concepts is formulated.
 .X
 798	2	1163
@@ -115591,7 +115591,7 @@ physics.. The system, designed and constructed at the Massachusetts Institute of
 Technology as a prototype operating in a realistic test environment, uses 
 remote consoles having access to a time-sharing computer facility.. Programs
 have been developed for a large variety of search and processing techniques in
-real time as well as for delayed output.. The work is supported by the National
+real time as well as for delayed toStringOutput.. The work is supported by the National
 Science Foundation and in part by Project MAC, the experimental computer 
 facility at MIT which is sponsored by the Advanced Research Projects Agency..
 .X
@@ -116903,7 +116903,7 @@ which the catalogue would exist as cassettes of film to be viewed by all users
 on reader machines.. This system has been specified and costed, and details are
 included in this paper.. The impetus in reaching this viewpoint was provided by
 the progress made over the last 18 months in the field of COM, which rapidly
-commended itself as the choice of output medium for the new mechanized 
+commended itself as the choice of toStringOutput medium for the new mechanized
 MARC-based catalogue, which covers all the library's serials and all 
 monographs acquired after January 1972.. BLCMP union catalogues in these
 categories will also be held in COM form at Birmingham University Library..
@@ -116944,7 +116944,7 @@ keys.. The programs allowed both weighted and Boolean searching on the title
 and author, LC classification and subject headings, and the BNB Precis indexing
 terms and Reference Index Numbers.. Test profiles were constructed for nine
 libraries covering a range of subject fields, and run on six weeks of BNB and 
-six weeks of LC MARC tapes.. The output was assessed for relevance and recall,
+six weeks of LC MARC tapes.. The toStringOutput was assessed for relevance and recall,
 and the results analyzed in terms of precision and recall for various 
 combinations of searchable fields.. The best performance, with recall and
 precision both about 50%, was given by searching all verbal fields together - 
@@ -118115,7 +118115,7 @@ Library of Congress cards, should studies find that the value of the data
 exceeds the cost of recording it..
    A demonstration was performed in which cards were typed to produce 
 perforated tape records.. These record tapes were automatically converted to a
-variety of output forms ranging from phototypeset catalog cards and book
+variety of toStringOutput forms ranging from phototypeset catalog cards and book
 catalog entries to tape typewriter and line printer produced catalog cards..
 .X
 852	2	1252
@@ -121717,7 +121717,7 @@ to 13,000 at an average continuous compound rate of about 2.5 percent
 per year, doubling about four times a century.  Deviations from the
 exponential curve are clearly related to war, depression, and recovery.  If the
 total number of publications prior to 1868 is estimated by extrapolating from
-the curve of annual output, the cumulative grand total of mathematical titles
+the curve of annual toStringOutput, the cumulative grand total of mathematical titles
 grows from 41,000 in 1867 to 419,000 by the end of 1965.  Deviations from
 an exponential growth of 2.5 percent per year are negligible except for two
 "pauses" during world wars, after which the observations continue parallel
@@ -123397,7 +123397,7 @@ Koch, H. William
    A new concept in science communication will be given its first test in
 calendar year 1972.. Primary and secondary contents of a selected subset of 
 the world's journal literature in physics will be provided in a variety of
-output formats.. Among them are a monthly microfilm containing the full texts
+toStringOutput formats.. Among them are a monthly microfilm containing the full texts
 of all articles in the set of journals (Current Physics Microform); an advance
 abstracts journal describing the articles (Current Physics Advance Abstracts);
 a printed, classified index of the titles of the articles (Current Physics 
@@ -124576,7 +124576,7 @@ must, however, be considered with prudence, since they may lead to
 misleading results.  No matter how cautiously the authors express
 themselves, the casual readers,  that is the majority, will treat 
 the results as established facts and forget about the assumptions
-underlying them.  This is also happening with the computer output
+underlying them.  This is also happening with the computer toStringOutput
 for economic models, which is accepted as if it were experimental
 observation.
 .X
@@ -130059,7 +130059,7 @@ Computer-Output Microfilm
 .A
 Bolef, D.
 .W
-  Computer output in microfilm or microfiche form (COM) rather than
+  Computer toStringOutput in microfilm or microfiche form (COM) rather than
 computer printout and conventional forms of reproduction is one possible way
 special librarians can reduce their costs, space needs, and time lags.  COM is
 described among with the equipment needed, where to find it, and experiences of 
@@ -130877,7 +130877,7 @@ Williams, M.E.
 to evaluate not only the contents of the many data bases available but the
 different services provided by various processing centers.  Criteria for 
 selection of data bases and data base services such as searching features, 
-logical capacity, document delivery, output format and medium, and costs are 
+logical capacity, document delivery, toStringOutput format and medium, and costs are
 examined.
 .X
 409	2	1376
@@ -136113,7 +136113,7 @@ of View
 .A
 Sengupta, I. N.
 .W
-   The output of scientific literature has been increasing exponentially since
+   The toStringOutput of scientific literature has been increasing exponentially since
 the second quarter of this century.. New journals in specialized branches of 
 science keep appearing and established periodicals either multiply the number of 
 volumes per year or split into different titles covering narrower subject 

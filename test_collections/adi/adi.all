@@ -26,7 +26,7 @@ of its own program efficiency;
      5 . it is user-oriented, providing 24-hour copy access
 and immediate microfilm access to its documents;
      6 . it is relatively simple, relying on the ibm 1401
-  data processing system for all its processing and output.
+  data processing system for all its processing and toStringOutput.
 
   since the system has been operating for over a year, the
 conclusions drawn are based on actual experience .
@@ -203,14 +203,14 @@ this paper defines and discusses most of the
  different types of computer-produced indexes including
  keyword, author, corporate author, citation and conventional
 subject-heading indexes, also the computer input
-and output formats for indexes, double look-up, coden
+and toStringOutput formats for indexes, double look-up, coden
  and a look at the future .
     computers have been used to produce many different
  thor, citation, source-code or report number, and even conventional
 subject-heading indexes .  most have been /current
 awareness/ indexes, although a few cumulative or retrospective
 indexes have also been produced .  this paper
-discusses computer input and output formats, most of the
+discusses computer input and toStringOutput formats, most of the
  different types of computer-produced indexes, problems of
  double look-up, codens and a look at the future .
 .I 16
@@ -226,9 +226,9 @@ logic of the medlars system .  the demand search
  reduced in size is then passed against a decision table for
  the final selection of citations .  the report generator
  module formats the citations of printer paper, cards, or
- photograph film .  the output processing module formats
+ photograph film .  the toStringOutput processing module formats
 index medicus and recurring bibliographies, which
- are automatically updated by the system .  the final output
+ are automatically updated by the system .  the final toStringOutput
  is processed by the graphic arts composing equipment
  for later printing .
 .I 17
@@ -549,7 +549,7 @@ evaluation by comparison of text with hierarchically
 organized keyword lists .
 .I 42
 .T
-new photon composing machine will set type from the output of
+new photon composing machine will set type from the toStringOutput of
 a computer .
 .A
 R. G. CROCKETT
@@ -583,7 +583,7 @@ L. F. BUCKLAND
 experiments are being performed to test the
  utility of a computer-connected cathode ray tube display in
  the man-machine processes of text editing and indexing,
- where a final output must be in machine as well as visual
+ where a final toStringOutput must be in machine as well as visual
  form .  results so far show that editing can be performed
 faster than with a typewriter console, and that the immediate
  display response is very useful when several sequential editing

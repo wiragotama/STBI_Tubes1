@@ -67,7 +67,7 @@ retrieval?  What will be the extent of their use in the future?
 .I 17
 .W
 Means of obtaining large volume, high speed, customer usable            
-information retrieval output.
+information retrieval toStringOutput.
 .I 18
 .W
 What methods are there for encoding, automatically matching,            
