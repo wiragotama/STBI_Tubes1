@@ -8,17 +8,38 @@ import parser.Parser;
 
 public class Queries {
 	private List<String[]> queries;
+	private List<String> stopWords;
+	private boolean stem;
 	
-	public Queries(String queryPath, String stopWordsPath, boolean stem){
+	public Queries(String stopWordsPath, boolean stem){
 		queries = new ArrayList<>();
-		
-		List<String> stopWords = Preprocessor.loadStopWords(stopWordsPath);
-		
+		stopWords = Preprocessor.loadStopWords(stopWordsPath);
+		this.stem = stem;		
+	}
+	
+	/**
+	 * Preprocess queries originated from external file for experiment option
+	 * @param queryPath path of query file
+	 */
+	public void processQueriesFromFile(String queryPath){
 		Parser parser = new Parser();
 		parser.parseQueries(queryPath);
 		queries = Preprocessor.tokenizeDocuments(parser.getQueries(), stopWords);
-		if(stem)
+		if(this.stem)
 			Preprocessor.stem(queries);
+	}
+	
+	/**
+	 * Preprocess queries inputted by users for interactive option
+	 * @param query string of query
+	 */
+	public void processQueryFromString(String query){
+		List<String> queries = new ArrayList<>();
+		
+		queries.add(query);
+		this.queries = Preprocessor.tokenizeDocuments(queries, stopWords);
+		if(this.stem)
+			Preprocessor.stem(this.queries);
 	}
 	
 	/**
@@ -60,7 +81,9 @@ public class Queries {
 	}
 	
 	public static void main(String[] args){
-		Queries queries = new Queries("test_collections/cisi/query.text", "custom.stopword", true);
+		Queries queries = new Queries("custom.stopword", true);
+		queries.processQueriesFromFile("test_collections/cisi/query.text");
+		queries.processQueryFromString("What problems and concerns are there in making up descriptive titles? What difficulties are involved in automatically retrieving articles from approximate titles?  What is the usual relevance of the content of articles to their titles?");
 		System.out.println(queries);
 	}
 }

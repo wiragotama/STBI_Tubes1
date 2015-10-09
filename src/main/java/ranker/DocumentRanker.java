@@ -178,7 +178,8 @@ public class DocumentRanker {
         vsm = new VSM();
         vsm.makeTFIDFWeightMatrix(documentTFOption, documentUseIDF, documentUseNormalization, collection);
 
-        queries = new Queries(queryPath, stopwordsPath, queryUseStemming);
+        queries = new Queries(stopwordsPath, queryUseStemming);
+        queries.processQueriesFromFile(queryPath);
 
         List<DocumentRank> result;
         int retrievedSize = 0;
