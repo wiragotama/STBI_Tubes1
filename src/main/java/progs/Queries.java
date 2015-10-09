@@ -52,6 +52,13 @@ public class Queries {
 		return this.queries.get(index);
 	}
 	
+	/**
+	 * Clear memory
+	 */
+	public void clear(){
+		this.queries.clear();
+	}
+	
 	public static void main(String[] args){
 		Queries queries = new Queries("test_collections/cisi/query.text", "custom.stopword", true);
 		System.out.println(queries);
