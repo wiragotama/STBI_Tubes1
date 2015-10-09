@@ -57,8 +57,32 @@ public class Documents {
 		return this.documents.get(index);
 	}
 	
+	/**
+	 * Get terms from all combined documents
+	 * @return List of terms
+	 */
+	public List<String> getTerms(){
+		List<String> terms = new ArrayList<>();
+		
+		for(String[] document : documents){
+			for(int i = 0; i < document.length; i++){
+				terms.add(document[i]);
+			}
+		}
+		
+		return terms;
+	}
+	
+	/**
+	 * Clear memory
+	 */
+	public void clear(){
+		this.documents.clear();
+	}
+	
 	public static void main(String[] args){
 		Documents docs = new Documents("test_collections/cisi/cisi.all", "custom.stopword", true);
 		System.out.println(docs);
+		System.out.println(docs.getTerms());
 	}
 }
