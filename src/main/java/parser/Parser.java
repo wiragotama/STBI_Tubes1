@@ -14,6 +14,7 @@ import java.util.Objects;
 public class Parser {
     private List<String> documents;
     private List<String> queries;
+    private List<String> documentsTitle;
     private List<List<Integer>> relevanceJudgements;
 
     public Parser (String documentsFilepath, String queriesFilepath, String relevanceJudgmentsFilepath)
@@ -32,9 +33,12 @@ public class Parser {
 
     public void parseDocuments(String filepath)
     {
+        documentsTitle = new ArrayList<>();
         documents = new ArrayList<>();
         String currentString = "";
         String currentDocument = "";
+        String currentDocumentTitle = "";
+        String title = "";
 
         try
         {
@@ -43,6 +47,7 @@ public class Parser {
 
             while(currentLine != null)
             {
+                title = currentLine;
                 currentLine = currentLine.toLowerCase();
                 if(currentLine.startsWith(".i") ||
                    currentLine.startsWith(".t") ||
@@ -58,12 +63,15 @@ public class Parser {
                     if(!currentDocument.equalsIgnoreCase(""))
                     {
                         documents.add(currentDocument.substring(0, currentDocument.length()-1));
+                        documentsTitle.add(currentDocumentTitle.substring(0, currentDocumentTitle.length()-1));
                         currentDocument = "";
+                        currentDocumentTitle = "";
                     }
                 }
                 if(currentString.startsWith(".t") && !currentLine.startsWith(".t"))
                 {
                     currentDocument += currentLine + " ";
+                    currentDocumentTitle += title + " ";
                 }
                 if(currentString.startsWith(".a") && !currentLine.startsWith(".a"))
                 {
@@ -79,16 +87,14 @@ public class Parser {
                         }
                     }
                 }
-                if(currentString.startsWith(".x") && !currentLine.startsWith(".x"))
-                {
-                }
 
                 currentLine = br.readLine();
             }
 
-            if(currentDocument.equalsIgnoreCase("") == false)
+            if(!currentDocument.equalsIgnoreCase(""))
             {
                 documents.add(currentDocument);
+                documentsTitle.add(currentDocumentTitle);
             }
 
         } catch (IOException e)
@@ -112,7 +118,9 @@ public class Parser {
             {
                 currentLine = currentLine.toLowerCase();
                 if(currentLine.startsWith(".i") ||
-                        currentLine.startsWith(".w"))
+                   currentLine.startsWith(".w") ||
+                   currentLine.startsWith(".a") ||
+                   currentLine.startsWith(".t"))
                 {
                     currentString = currentLine;
                 }
@@ -126,6 +134,26 @@ public class Parser {
                     }
                 }
                 if(currentString.startsWith(".w") && !currentLine.startsWith(".w"))
+                {
+                    for(String word : currentLine.split(" "))
+                    {
+                        if(!word.equalsIgnoreCase(""))
+                        {
+                            currentQuery += word + " ";
+                        }
+                    }
+                }
+                if(currentString.startsWith(".t") && !currentLine.startsWith(".t"))
+                {
+                    for(String word : currentLine.split(" "))
+                    {
+                        if(!word.equalsIgnoreCase(""))
+                        {
+                            currentQuery += word + " ";
+                        }
+                    }
+                }
+                if(currentString.startsWith(".a") && !currentLine.startsWith(".a"))
                 {
                     for(String word : currentLine.split(" "))
                     {
@@ -192,7 +220,6 @@ public class Parser {
                     else if (!word.equalsIgnoreCase("") && Integer.valueOf(word) > 0 && !relevantDocumentFound && indexFound)
                     {
                         relevantDocument = Integer.valueOf(word) - 1;
-                        relevantDocumentFound = true;
                         break;
                     }
                 }
@@ -238,11 +265,27 @@ public class Parser {
         this.relevanceJudgements = relevanceJudgements;
     }
 
+    public List<String> getDocumentsTitle() {
+        return documentsTitle;
+    }
+
+    public void setDocumentsTitle(List<String> documentsTitle) {
+        this.documentsTitle = documentsTitle;
+    }
+
     public void printDocuments()
     {
         for(int i=0; i<documents.size(); i++)
         {
             System.out.printf("Document[%d]: %s\n", i, documents.get(i));
+        }
+    }
+
+    public void printDocumentsTitle()
+    {
+        for(int i=0; i<documentsTitle.size(); i++)
+        {
+            System.out.printf("Documents[%d]: %s\n", i, documentsTitle.get(i));
         }
     }
 
@@ -268,17 +311,17 @@ public class Parser {
 
     public static void main(String [] args)
     {
-        String documentsFilepath = "test_collections/cisi/cisi.all";
-        String queriesFilepath = "test_collections/cisi/query.text";
-        String relevanceJudgementsFilepath = "test_collections/cisi/qrels.text";
-
         Parser parser = new Parser();
-        parser.parseDocuments(documentsFilepath);
-        parser.parseQueries(queriesFilepath);
-        parser.parseRelevanceJudgements(relevanceJudgementsFilepath);
+        System.out.println("===== Test Collections CISI =====");
+        parser.parseDocuments("test_collections/cisi/cisi.all");
+        parser.parseQueries("test_collections/cisi/query.text");
+        parser.parseRelevanceJudgements("test_collections/cisi/qrels.text");
+        parser.printDocumentsTitle();
 
-        Parser parser1 = new Parser("test_collections/adi/adi.all", "test_collections/adi/query.text", "test_collections/adi/qrels.text");
-        parser1.printRelevanceJudgements();
-
+        System.out.println("\n===== Test Collections ADI =====");
+        parser.parseDocuments("test_collections/adi/adi.all");
+        parser.parseQueries("test_collections/adi/query.text");
+        parser.parseRelevanceJudgements("test_collections/adi/qrels.text");
+        parser.printDocumentsTitle();
     }
 }

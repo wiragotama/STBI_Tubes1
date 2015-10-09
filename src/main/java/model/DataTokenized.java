@@ -6,6 +6,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -25,6 +26,18 @@ public class DataTokenized {
         int len = text.size();
         for (int i=0; i<len; i++)
             this.text.add(text.get(i));
+    }
+
+    /**
+     * Constructor
+     * @param terms
+     */
+    public DataTokenized(List<String> terms)
+    {
+        this.text = new ArrayList();
+        int len = terms.size();
+        for (int i=0; i<len; i++)
+            this.text.add(terms.get(i));
     }
     
     /**

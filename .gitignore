@@ -30,6 +30,9 @@
 ## File-based project format:
 *.ipr
 *.iws
+*.invertedFile
+*.config
+*.idf
 
 ## Plugin-specific files:
 

@@ -10,12 +10,16 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import model.DataTokenized;
 import model.DataTokenizedInstances;
+
+import javax.print.Doc;
 
 /**
  *
@@ -121,7 +125,7 @@ public class VSM {
             return 0;
         else
         {
-            double TF =  (double) Collections.frequency(doc, term); //nor normalization
+            double TF =  (double) Collections.frequency(doc, term); //no normalization
             if (option==2) 
             {
                 if (TF>0) TF=1;
@@ -131,6 +135,7 @@ public class VSM {
             {
                 if (TF!=0)
                     TF = 1+ Math.log(TF);
+                //else, means TF is 0
             }
             return TF;
         }
@@ -179,16 +184,17 @@ public class VSM {
     public void makeTFIDFWeightMatrix(int TFOption, boolean useIDF, boolean normalization, DataTokenizedInstances collection)
     {
         listOfAllTermsInDocuments(collection);
-        if (useIDF)
-            generateTermsIDF(collection);
+        generateTermsIDF(collection);
         this.normalization = normalization;
         this.useIDF = useIDF;
         this.TFOption = TFOption;
         this.weightMatrix = new ArrayList();
         
-        double maxTF = (double) Integer.MIN_VALUE; //for Augmented TF
+        double[] maxTF = new double[this.collectionSize]; //max TF for each terms in all documents
+        for (int j=0; j<this.collectionSize; j++)
+            maxTF[j] = Integer.MIN_VALUE;
         
-        //making TF-IDF matrix
+        //making TF matrix
         int N = this.terms.size();
         for (int i=0; i<N; i++)
         {
@@ -197,18 +203,13 @@ public class VSM {
             {
                 double TF = TFWeight(TFOption, this.terms.get(i), collection.getInstance(j).getText());
                 if (TFOption!=0) { //use TF
-                    if (useIDF)
-                        weightVector.add(termsIDF.get(i) * TF);
-                    else //don't use IDF
-                        weightVector.add(TF);
+                    weightVector.add(TF);
                 }
-                else if (useIDF) //IDF only
-                    weightVector.add(termsIDF.get(i));
-                else
+                else //not use TF
                     weightVector.add(0.0);
                 
-                if (TF>maxTF) //for augmented TF
-                    maxTF = TF;
+                if (TF>maxTF[j]) //for augmented TF
+                    maxTF[j] = TF;
             }
            
             this.weightMatrix.add(weightVector);
@@ -216,9 +217,27 @@ public class VSM {
         
         if (TFOption==3) //augmented TF Case, devide by biggest TF in documents
         {
+            /* 0.5 + 0.5*TF(T, D) / Max TF(T, Di) for Di is all documents */
             for (int i=0; i<N; i++)
                 for (int j=0; j<this.collectionSize; j++)
-                    this.weightMatrix.get(i).set(j, this.weightMatrix.get(i).get(j)/maxTF);
+                    if (this.weightMatrix.get(i).get(j)>0)
+                        this.weightMatrix.get(i).set(j, 0.5+0.5*this.weightMatrix.get(i).get(j)/maxTF[j]);
+        }
+
+        //making IDF matrix
+        for (int i=0; i<N; i++)
+        {
+            for (int j=0; j<this.collectionSize; j++) {
+                double TF = TFWeight(TFOption, this.terms.get(i), collection.getInstance(j).getText());
+                if (TFOption != 0) { //use TF and IDF
+                    if (useIDF)
+                        this.weightMatrix.get(i).set(j, this.weightMatrix.get(i).get(j) * termsIDF.get(i));
+                }
+                else if (useIDF) //IDF only
+                    this.weightMatrix.get(i).set(j, termsIDF.get(i));
+                else  //not use TF and IDF
+                    this.weightMatrix.get(i).set(j, 0.0);
+            }
         }
         
         if (normalization) //normalization is counted to the terms vector
@@ -268,60 +287,6 @@ public class VSM {
                 System.out.print(df.format(this.weightMatrix.get(i).get(j))+" ");
             System.out.println("]");
         }
-    }
-    
-    /**
-     * Assumption : query option is same as VSM option
-     * @param queryTokenized
-     * @return ArrayList<Double> queryWeight
-     */
-    public ArrayList<Double> queryWeighting(DataTokenized queryTokenized)
-    {
-        ArrayList<Double> queryWeight = new ArrayList();
-        int N = queryTokenized.size();
-        double maxTF = 0;
-        for (int i=0; i<N; i++)
-        {
-            double TF = TFWeight(this.TFOption, queryTokenized.getText().get(i), queryTokenized.getText());
-            if (this.TFOption!=0) { //use TF
-                if (this.useIDF)
-                    queryWeight.add(this.termsIDF.get(i) * TF);
-                else //don't use IDF
-                    queryWeight.add(TF);
-            }
-            else if (this.useIDF) //IDF only
-                queryWeight.add(this.termsIDF.get(i));
-            else
-                queryWeight.add(0.0);
-            
-            //disini ragu2, maxTF disini harusnya keseluruhan dokumen (yang dipake bikin VSM) 
-            //atau di query aja, secara logika sih harusnya yang di query aja
-            if (TF>maxTF) //for augmented TF case
-                maxTF = TF;
-        }
-        
-        if (this.TFOption==3) //augmented TF Case, devide by biggest TF in documents
-        {
-            for (int i=0; i<N; i++)
-                queryWeight.set(i, queryWeight.get(i)/maxTF);
-        }
-        
-        if (this.normalization) //normalization is counted to the terms vector
-        {
-            //count |doc weight|, for each element of doc devide by |doc weight|
-            double cosineLength = 0.0;
-            for (int i=0; i<N; i++)
-            {
-                cosineLength += Math.pow(queryWeight.get(i), 2.0);
-            }
-
-            cosineLength = Math.sqrt(cosineLength);
-            for (int i=0; i<N; i++)
-            {
-                queryWeight.set(i, queryWeight.get(i)/cosineLength);
-            }
-        }
-        return queryWeight;
     }
     
     /**
@@ -606,5 +571,125 @@ public class VSM {
         catch (IOException ex) {
             return null;
         }
+    }
+
+    /**
+     * Doing Query with Queries
+     * @param query
+     * @param TFOption 0:no TF, 1:Raw TF, 2:Binary TF, 3:Augmented TF, 4:Logarithmic TF
+     * @param useIDF, true if use IDF
+     * @param normalization, true if use normalization
+     * @return document result (with rank)
+     */
+    public List<DocumentRank> queryTask(String[] query, int TFOption, boolean useIDF, boolean normalization)
+    {
+        List<DocumentRank> rank = new ArrayList<DocumentRank>();
+
+        //make query into set of terms
+        List<String> terms = new ArrayList<String>();
+        for (int i=0; i<query.length; i++) {
+            if (Collections.frequency(terms, query[i]) == 0)
+                terms.add(query[i]);
+        }
+
+        Double[] queryWeight = new Double[terms.size()];
+        int termSize = terms.size();
+        List<String> queryList = Arrays.asList(query);
+
+        //IDF
+        if (useIDF) {
+            for (int i = 0; i < termSize; i++) {
+                int idx = this.terms.indexOf(terms.get(i));
+                if (idx != -1) {
+                    queryWeight[i] = this.termsIDF.get(idx);
+                    //System.out.println(terms.get(i)+" "+idx+" "+this.getTermsIDF().get(idx));
+                }
+                else
+                    queryWeight[i] = 0.0;
+            }
+        }
+
+        //TF
+        double maxTF = -1;
+        if (TFOption!=0) {
+            Double tempTF[] = new Double[queryWeight.length];
+            for (int i = 0; i < termSize; i++) {
+                double TF = (double) Collections.frequency(queryList, terms.get(i));
+                //TFOption 0:no TF, 1:Raw TF, 2:Binary TF, 3:Augmented TF, 4:Logarithmic TF
+                if (TFOption == 2) { //binary TF
+                    if (TF > 0) TF = 1.0;
+                    if (useIDF)
+                        queryWeight[i] *= TF;
+                    else
+                        queryWeight[i] = TF;
+                }
+                else if (TFOption==3)
+                {
+                    if (maxTF < TF)
+                        maxTF = TF;
+                        tempTF[i] = TF;
+                }
+                else if (TFOption==4 && TF!=0) {
+                    TF = 1.0 + Math.log(TF);
+                    if (useIDF)
+                        queryWeight[i] *= TF;
+                    else
+                        queryWeight[i] = TF;
+                }
+            }
+
+            //augmented TF case
+            if (TFOption==3)
+            {
+                for (int i=0; i<tempTF.length; i++)
+                {
+                    if (Double.compare(tempTF[i],0.0)!=0)
+                        if (useIDF)
+                            queryWeight[i] = queryWeight[i] * (0.5+0.5*tempTF[i]/maxTF);
+                        else
+                            queryWeight[i] = (0.5+0.5*tempTF[i]/maxTF);
+                    else
+                        queryWeight[i] = 0.0;
+                }
+            }
+        }
+
+        if (normalization)
+        {
+            double dividen = 0;
+            for (int i=0; i<queryWeight.length; i++)
+            {
+                dividen += Math.pow(queryWeight[i],2.0);
+            }
+            dividen = Math.sqrt(dividen);
+            for (int i=0; i<queryWeight.length; i++)
+            {
+                queryWeight[i] /= dividen;
+            }
+        }
+
+        //SC computing
+        double SC_val;
+        for (int doc=0; doc<this.collectionSize; doc++)
+        {
+            SC_val = 0.0;
+            for (int i=0; i<termSize; i++)
+            {
+                int idx = this.terms.indexOf(terms.get(i));
+                if (idx!=-1)
+                    SC_val += this.weightMatrix.get(idx).get(doc) * queryWeight[i];
+            }
+            DocumentRank temp = new DocumentRank(doc, SC_val);
+            rank.add(temp);
+        }
+
+        //urutkan
+        rank = com.google.common.collect.Ordering.natural().greatestOf(rank, rank.size());
+        Integer[] docNo = new Integer[rank.size()];
+        for (int i=0; i<docNo.length; i++)
+            docNo[i] = rank.get(i).getDocNum();
+
+        //return docNo;
+        return rank;
     }
 }
