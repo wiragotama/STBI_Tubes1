@@ -10,6 +10,7 @@ import vsm.VSM;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by timothy.pratama on 09-Oct-15.
@@ -33,6 +34,8 @@ public class DocumentRanker {
     private boolean queryUseStemming;
     private double threshold;
     private String toStringOutput;
+    private boolean isExperiment;
+    private String queryInput;
 
     public String getToStringOutput() {
         return toStringOutput;
@@ -146,9 +149,9 @@ public class DocumentRanker {
         this.documentUseStemming = documentUseStemming;
     }
 
-    DocumentRanker(String documentPath, String queryPath, String relevanceJudgmentPath, String stopwordsPath, double threshold)
+    DocumentRanker()
     {
-        this.documentPath = documentPath;
+        /*this.documentPath = documentPath;
         this.queryPath = queryPath;
         this.relevanceJudgmentPath = relevanceJudgmentPath;
         this.stopwordsPath = stopwordsPath;
@@ -162,24 +165,41 @@ public class DocumentRanker {
         this.queryUseStemming = true;
         this.threshold = threshold;
         parser = new Parser(documentPath, queryPath, relevanceJudgmentPath);
-        documents = new Documents(documentPath, stopwordsPath, documentUseStemming);
+        documents = new Documents(documentPath, stopwordsPath, documentUseStemming);*/
     }
 
     public void build()
     {
-        //TODO: Bikin load options dulu di sini (baca dari filenya melvin)
+        readOption();
 
-        DataTokenizedInstances collection = new DataTokenizedInstances();
-        for (int i=0; i<documents.size(); i++)
+        if(isExperiment)
         {
-            DataTokenized temp = new DataTokenized(Arrays.asList(documents.getDocument(i)));
-            collection.add(temp);
+            parser = new Parser(documentPath, queryPath, relevanceJudgmentPath);
+            documents = new Documents(documentPath, stopwordsPath, documentUseStemming);
+
+            DataTokenizedInstances collection = new DataTokenizedInstances();
+            for (int i = 0; i < documents.size(); i++) {
+                DataTokenized temp = new DataTokenized(Arrays.asList(documents.getDocument(i)));
+                collection.add(temp);
+            }
+            vsm = new VSM();
+            vsm.makeTFIDFWeightMatrix(documentTFOption, documentUseIDF, documentUseNormalization, collection);
+
+            queries = new Queries(queryPath, stopwordsPath, queryUseStemming);
+            vsm.save("tfidf");
         }
-        vsm = new VSM();
-        vsm.makeTFIDFWeightMatrix(documentTFOption, documentUseIDF, documentUseNormalization, collection);
+        else
+        {
+            //queries dari input
+            vsm = new VSM();
+            vsm.load("tfidf");
+            
+        }
+        evaluateQuery();
+    }
 
-        queries = new Queries(queryPath, stopwordsPath, queryUseStemming);
-
+    private void evaluateQuery()
+    {
         List<DocumentRank> result;
         int retrievedSize = 0;
         int relevanceSize = 0;
@@ -228,9 +248,92 @@ public class DocumentRanker {
         toStringOutput += -1 + "\n";
     }
 
-    public void evaluateQuery()
+    private void readOption()
     {
+        isExperiment=true;
+        String currentLine;
+        Scanner scanner = new Scanner(System.in);
+        currentLine = scanner.nextLine();
+        if (currentLine.equalsIgnoreCase("experiment"))
+            isExperiment = true;
+        else
+            isExperiment = false;
 
+        if (isExperiment==false)
+            this.queryInput = scanner.nextLine();
+
+        this.documentPath = scanner.nextLine();
+        this.queryPath = scanner.nextLine();
+        this.relevanceJudgmentPath = scanner.nextLine();
+        this.stopwordsPath = scanner.nextLine();
+
+        //Document TF
+        currentLine = scanner.nextLine();
+        if (currentLine.equalsIgnoreCase("notf"))
+            this.documentTFOption = 0;
+        else if (currentLine.equalsIgnoreCase("rawtf"))
+            this.documentTFOption = 1;
+        else if (currentLine.equalsIgnoreCase("binarytf"))
+            this.documentTFOption = 2;
+        else if (currentLine.equalsIgnoreCase("augmentedtf"))
+            this.documentTFOption = 3;
+        else if (currentLine.equalsIgnoreCase("logarithmictf"))
+            this.documentTFOption = 4;
+
+        //Document IDF
+        currentLine = scanner.nextLine();
+        if (currentLine.equalsIgnoreCase("noidf"))
+            this.documentUseIDF = false;
+        else if (currentLine.equalsIgnoreCase("usingidf"))
+            this.documentUseIDF = true;
+
+        //Document normalization
+        currentLine = scanner.nextLine();
+        if (currentLine.equalsIgnoreCase("nonormalization"))
+            this.documentUseNormalization = false;
+        else if (currentLine.equalsIgnoreCase("usingnormalization"))
+            this.documentUseNormalization = true;
+
+        //Document Stemming
+        currentLine = scanner.nextLine();
+        if (currentLine.equalsIgnoreCase("nostemming"))
+            this.documentUseStemming = false;
+        else if (currentLine.equalsIgnoreCase("usingstemming"))
+            this.documentUseStemming = true;
+
+        //Query TF
+        currentLine = scanner.nextLine();
+        if (currentLine.equalsIgnoreCase("notf"))
+            this.queryTFOption = 0;
+        else if (currentLine.equalsIgnoreCase("rawtf"))
+            this.queryTFOption = 1;
+        else if (currentLine.equalsIgnoreCase("binarytf"))
+            this.queryTFOption = 2;
+        else if (currentLine.equalsIgnoreCase("augmentedtf"))
+            this.queryTFOption = 3;
+        else if (currentLine.equalsIgnoreCase("logarithmictf"))
+            this.queryTFOption = 4;
+
+        //Query IDF
+        currentLine = scanner.nextLine();
+        if (currentLine.equalsIgnoreCase("noidf"))
+            this.queryUseIDF = false;
+        else if (currentLine.equalsIgnoreCase("usingidf"))
+            this.queryUseIDF = true;
+
+        //Query normalization
+        currentLine = scanner.nextLine();
+        if (currentLine.equalsIgnoreCase("nonormalization"))
+            this.queryUseNormalization = false;
+        else if (currentLine.equalsIgnoreCase("usingnormalization"))
+            this.queryUseNormalization = true;
+
+        //Query Stemming
+        currentLine = scanner.nextLine();
+        if (currentLine.equalsIgnoreCase("nostemming"))
+            this.queryUseStemming = false;
+        else if (currentLine.equalsIgnoreCase("usingstemming"))
+            this.queryUseStemming = true;
     }
 
     @Override
@@ -240,8 +343,8 @@ public class DocumentRanker {
 
     public static void main(String [] args)
     {
-        DocumentRanker documentRanker = new DocumentRanker("test_collections/adi/adi.all", "test_collections/adi/query.text", "test_collections/adi/qrels.text", "custom.stopword", 0.1);
-        documentRanker.build();
-        System.out.println(documentRanker.toString());
+        //DocumentRanker documentRanker = new DocumentRanker("test_collections/adi/adi.all", "test_collections/adi/query.text", "test_collections/adi/qrels.text", "custom.stopword", 0.1);
+        //documentRanker.build();
+        //System.out.println(documentRanker.toString());
     }
 }
