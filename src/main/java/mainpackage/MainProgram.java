@@ -17,6 +17,6 @@ public class MainProgram {
         DocumentRanker documentRanker = new DocumentRanker();
         documentRanker.setThreshold(0.01);
         documentRanker.build();
-        System.out.println(documentRanker.toString());
+        System.out.print(documentRanker.toString());
     }
 }
