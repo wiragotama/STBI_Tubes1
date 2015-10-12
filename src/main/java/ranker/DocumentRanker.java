@@ -224,9 +224,18 @@ public class DocumentRanker {
             }
 
             if (isExperiment) {
-                precision = (double) relevanceSize / (double) retrievedSize;
-                recall = (double) relevanceSize / (double) parser.getRelevanceJudgements().get(q).size();
-                nonInterpolatedAveragePrecision = nonInterpolatedAveragePrecision / (double) parser.getRelevanceJudgements().get(q).size();
+                if(retrievedSize > 0)
+                {
+                    precision = (double) relevanceSize / (double) retrievedSize;
+                    recall = (double) relevanceSize / (double) parser.getRelevanceJudgements().get(q).size();
+                    nonInterpolatedAveragePrecision = nonInterpolatedAveragePrecision / (double) parser.getRelevanceJudgements().get(q).size();
+                }
+                else
+                {
+                    precision = 0;
+                    recall = 0;
+                    nonInterpolatedAveragePrecision = 0;
+                }
             }
 
             toStringOutput += retrievedSize + "\n";
