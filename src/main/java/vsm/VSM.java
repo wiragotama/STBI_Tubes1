@@ -160,7 +160,7 @@ public class VSM {
                 dft++;
             }
         }
-        
+        if (dft>N) dft = N;
         return Math.log((double)N / (double)dft);
     }
     
