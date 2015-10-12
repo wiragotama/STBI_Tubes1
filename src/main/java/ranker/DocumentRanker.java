@@ -238,11 +238,12 @@ public class DocumentRanker {
 
             for(int i=0; i<retrievedSize; i++)
             {
-                toStringOutput += result.get(i).getDocNum() + "\n";
+                toStringOutput += result.get(i).getDocNum()+1 + "\n";
                 toStringOutput += parser.getDocumentsTitle().get(result.get(i).getDocNum()) + "\n";
             }
         }
-        toStringOutput += -1 + "\n";
+//        toStringOutput += -1 + "\n";
+        toStringOutput = toStringOutput.substring(0, toStringOutput.length()-1);
     }
 
     /**

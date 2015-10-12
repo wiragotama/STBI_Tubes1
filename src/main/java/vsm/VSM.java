@@ -351,7 +351,7 @@ public class VSM {
      */
     private void loadFromInvertedFile(String filePath)
     {
-        System.out.println("Loading Inverted File");
+//        System.out.println("Loading Inverted File");
         BufferedReader reader = null;
         String line = null;
         this.weightMatrix = new ArrayList();
@@ -448,7 +448,7 @@ public class VSM {
      */
     private void loadIDF(String filePath)
     {
-        System.out.println("Loading Terms IDF File");
+//        System.out.println("Loading Terms IDF File");
         BufferedReader reader = null;
         String line = null;
         this.terms = new ArrayList();
@@ -509,7 +509,7 @@ public class VSM {
      */
     private void loadConfig(String filePath)
     {
-        System.out.println("Loading Config File");
+//        System.out.println("Loading Config File");
         this.terms = new ArrayList();
         this.termsIDF = new ArrayList();
         
