@@ -153,7 +153,7 @@ public class VSM {
     public double IDFWeight(String term, DataTokenizedInstances collection)
     {
         int N = this.collectionSize;
-        int dft=1; //prevent infinity
+        int dft=0; //prevent infinity
         for (int i=0; i<this.collectionSize; i++)
         {
             if (collection.getInstance(i).getText().contains(term)) {
@@ -680,8 +680,10 @@ public class VSM {
             for (int i=0; i<termSize; i++)
             {
                 int idx = this.terms.indexOf(terms.get(i));
-                if (idx!=-1)
+                if (idx!=-1) {
+                    System.out.println((this.weightMatrix.get(idx).get(doc) * queryWeight[i]));
                     SC_val += this.weightMatrix.get(idx).get(doc) * queryWeight[i];
+                }
             }
             DocumentRank temp = new DocumentRank(doc, SC_val);
             rank.add(temp);
