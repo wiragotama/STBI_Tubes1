@@ -3,11 +3,11 @@ test_collections/adi/adi.all
 test_collections/adi/query.text
 test_collections/adi/qrels.text
 custom.stopword
-NoTF
+RawTF
 NoIDF
-NoNormalization
+UsingNormalization
 NoStemming
-NoTF
+RawTF
 NoIDF
-NoNormalization
+UsingNormalization
 NoStemming

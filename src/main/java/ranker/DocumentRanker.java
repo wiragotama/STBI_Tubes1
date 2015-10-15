@@ -47,6 +47,12 @@ public class DocumentRanker {
     private String QueryIDFOption;
     private String QueryNormalizationOption;
     private String QueryStemmingOption;
+    private int counter;
+
+    public DocumentRanker()
+    {
+        this.counter = 0;
+    }
 
     public String getToStringOutput() {
         return toStringOutput;
@@ -160,6 +166,84 @@ public class DocumentRanker {
         this.documentUseStemming = documentUseStemming;
     }
 
+    public void hijackedRead(int i, int j, int k, int l)
+    {
+        isExperiment=true;
+
+        this.documentPath = "test_collections/cisi/cisi.all";
+        this.queryPath = "test_collections/cisi/query.text";
+        this.relevanceJudgmentPath = "test_collections/cisi/qrels.text";
+        this.stopwordsPath = "custom.stopword";
+
+        //Document TF
+        this.documentTFOption = this.queryTFOption = i;
+        if (i==0) this.DocumentTFOption= this.QueryTFOption = "NoTF";
+        else if (i==1) this.DocumentIDFOption= this.QueryTFOption = "RawTF";
+        else if (i==2) this.DocumentTFOption= this.QueryTFOption = "BinaryTF";
+        else if (i==3) this.DocumentTFOption= this.QueryTFOption = "AugmentedTF";
+        else this.DocumentTFOption= this.QueryTFOption = "LogarithmicTF";
+
+        //Document IDF
+        this.documentUseIDF = this.queryUseIDF = (j==1);
+        if (j==1) this.DocumentIDFOption= this.QueryIDFOption = "UsingIDF";
+        else this.DocumentIDFOption= this.QueryIDFOption = "NoIDF";
+
+        //Document normalization
+        this.documentUseNormalization = this.queryUseNormalization = (k==1);
+        if (k==1) this.DocumentnormalizationOption = this.QueryNormalizationOption = "UsingNormalization";
+        else this.DocumentnormalizationOption = this.QueryNormalizationOption = "NoNormalization";
+
+        //Document Stemming
+        this.documentUseStemming = this.queryUseStemming = (l==1);
+        if (l==1) this.DocumentstemmingOption = this.QueryStemmingOption = "UsingStemming";
+        else this.DocumentstemmingOption = this.QueryStemmingOption = "NoStemming";
+    }
+    /**
+     * Build the document ranker based on the options from the GUI
+     */
+    public void buildHijacked(int a, int b, int c, int d, int counter)
+    {
+        this.counter = counter;
+        // baca option dari gui
+        //readOption();
+
+        //sementara diganti
+        this.hijackedRead(a, b, c, d);
+        System.out.println("Hijacked Read...");
+
+        // buat parser berdasarkan collection set, test set, dan relevance judgement path
+        parser = new Parser(documentPath, queryPath, relevanceJudgmentPath);
+        System.out.println("Parser created...");
+
+        if(isExperiment)
+        {
+            documents = new Documents(documentPath, stopwordsPath, documentUseStemming);
+            DataTokenizedInstances collection = new DataTokenizedInstances();
+            for (int i = 0; i < documents.size(); i++) {
+                DataTokenized temp = new DataTokenized(Arrays.asList(documents.getDocument(i)));
+                collection.add(temp);
+            }
+            vsm = new VSM();
+            vsm.makeTFIDFWeightMatrix(documentTFOption, documentUseIDF, documentUseNormalization, collection);
+            System.out.println("VSM created...");
+            queries = new Queries(stopwordsPath, queryUseStemming);
+            queries.processQueriesFromFile(queryPath);
+            System.out.println("Queries Processed...");
+            vsm.save("tfidf");
+            System.out.println("VSM saved...");
+        }
+        else
+        {
+            //queries dari input
+            vsm = new VSM();
+            vsm.load("tfidf");
+            queries = new Queries(stopwordsPath, queryUseStemming);
+            queries.processQueryFromString(this.queryInput);
+        }
+        // evaluate query sesuai dengan option dari gui
+        evaluateQuery();
+    }
+
     /**
      * Build the document ranker based on the options from the GUI
      */
@@ -174,7 +258,6 @@ public class DocumentRanker {
         if(isExperiment)
         {
             documents = new Documents(documentPath, stopwordsPath, documentUseStemming);
-
             DataTokenizedInstances collection = new DataTokenizedInstances();
             for (int i = 0; i < documents.size(); i++) {
                 DataTokenized temp = new DataTokenized(Arrays.asList(documents.getDocument(i)));
@@ -205,7 +288,13 @@ public class DocumentRanker {
     {
         /* Untuk output CSV */
         try {
-            PrintWriter printer = new PrintWriter("outputLaporan.csv", "UTF-8");
+            PrintWriter printer;
+            if (counter!=0) {
+                printer = new PrintWriter("outputLaporan" + counter + ".csv", "UTF-8");
+            }
+            else {
+                printer = new PrintWriter("outputLaporan.csv", "UTF-8");
+            }
             printer.println(",document,query");
             printer.println("TF,"+this.DocumentTFOption+","+this.QueryTFOption);
             printer.println("IDF,"+this.DocumentIDFOption+","+this.QueryIDFOption);
@@ -225,6 +314,7 @@ public class DocumentRanker {
             // Evaluasi setiap document yang diretrieve dengan relevance judgment pada setiap query
             for(int q=0; q<queries.getQueries().size(); q++)
             {
+                System.out.println("Evaluate Query " + (q+1));
                 retrievedSize = 0;
                 relevanceSize = 0;
                 nonInterpolatedAveragePrecision = 0;
