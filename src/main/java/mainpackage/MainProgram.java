@@ -28,11 +28,13 @@ public class MainProgram {
                             //do nothing
                         }
                         else {
-                            System.out.println(counter);
-                            DocumentRanker documentRanker = new DocumentRanker();
-                            documentRanker.setThreshold(0.01);
-                            documentRanker.buildHijacked(i, j, k, l, counter);
-                            System.out.print(documentRanker.toString());
+                            if(counter > 0) {
+                                System.out.println(counter);
+                                DocumentRanker documentRanker = new DocumentRanker();
+                                documentRanker.setThreshold(0.01);
+                                documentRanker.buildHijacked(i, j, k, l, counter);
+                                System.out.print(documentRanker.toString());
+                            }
                             counter++;
                         }
                     }
