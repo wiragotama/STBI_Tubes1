@@ -8,6 +8,9 @@ import progs.Queries;
 import vsm.DocumentRank;
 import vsm.VSM;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -36,6 +39,14 @@ public class DocumentRanker {
     private String toStringOutput;
     private boolean isExperiment;
     private String queryInput;
+    private String DocumentTFOption;
+    private String DocumentIDFOption;
+    private String DocumentnormalizationOption;
+    private String DocumentstemmingOption;
+    private String QueryTFOption;
+    private String QueryIDFOption;
+    private String QueryNormalizationOption;
+    private String QueryStemmingOption;
 
     public String getToStringOutput() {
         return toStringOutput;
@@ -192,67 +203,86 @@ public class DocumentRanker {
      */
     private void evaluateQuery()
     {
-        List<DocumentRank> result;
-        int retrievedSize = 0;
-        int relevanceSize = 0;
-        double precision = 0;
-        double recall = 0;
-        double nonInterpolatedAveragePrecision = 0;
-        toStringOutput = "";
+        /* Untuk output CSV */
+        try {
+            PrintWriter printer = new PrintWriter("outputLaporan.csv", "UTF-8");
+            printer.println(",document,query");
+            printer.println("TF,"+this.DocumentTFOption+","+this.QueryTFOption);
+            printer.println("IDF,"+this.DocumentIDFOption+","+this.QueryIDFOption);
+            printer.println("Normalization,"+this.DocumentnormalizationOption+","+this.QueryNormalizationOption);
+            printer.println("Stemming,"+this.DocumentstemmingOption+","+this.QueryStemmingOption);
+            printer.println("Query");
+            printer.println("Query,Precision,Recall,Non-Interpolated Average Precision");
 
-        // Evaluasi setiap document yang diretrieve dengan relevance judgment pada setiap query
-        for(int q=0; q<queries.getQueries().size(); q++)
-        {
-            retrievedSize = 0;
-            relevanceSize = 0;
-            nonInterpolatedAveragePrecision = 0;
-            precision = 0;
-            recall = 0;
+            List<DocumentRank> result;
+            int retrievedSize = 0;
+            int relevanceSize = 0;
+            double precision = 0;
+            double recall = 0;
+            double nonInterpolatedAveragePrecision = 0;
+            toStringOutput = "";
 
-            result = vsm.queryTask(queries.getQuery(q), queryTFOption, queryUseIDF, queryUseNormalization);
-            for(int d=0; d<result.size(); d++)
+            // Evaluasi setiap document yang diretrieve dengan relevance judgment pada setiap query
+            for(int q=0; q<queries.getQueries().size(); q++)
             {
-                if(result.get(d).getSC() > threshold)
-                {
-                    retrievedSize ++;
-                    if (isExperiment)
-                        if(parser.getRelevanceJudgements().get(q).contains(result.get(d).getDocNum())) {
-                            relevanceSize++;
-                            nonInterpolatedAveragePrecision = nonInterpolatedAveragePrecision + ((double) relevanceSize / (double) retrievedSize);
-                        }
-                }
-            }
+                retrievedSize = 0;
+                relevanceSize = 0;
+                nonInterpolatedAveragePrecision = 0;
+                precision = 0;
+                recall = 0;
 
-            if (isExperiment) {
-                if(retrievedSize > 0)
+                result = vsm.queryTask(queries.getQuery(q), queryTFOption, queryUseIDF, queryUseNormalization);
+                for(int d=0; d<result.size(); d++)
                 {
-                    precision = (double) relevanceSize / (double) retrievedSize;
-                    recall = (double) relevanceSize / (double) parser.getRelevanceJudgements().get(q).size();
-                    nonInterpolatedAveragePrecision = nonInterpolatedAveragePrecision / (double) parser.getRelevanceJudgements().get(q).size();
+                    if(result.get(d).getSC() > threshold)
+                    {
+                        retrievedSize ++;
+                        if (isExperiment)
+                            if(parser.getRelevanceJudgements().get(q).contains(result.get(d).getDocNum())) {
+                                relevanceSize++;
+                                nonInterpolatedAveragePrecision = nonInterpolatedAveragePrecision + ((double) relevanceSize / (double) retrievedSize);
+                            }
+                    }
                 }
-                else
+
+                if (isExperiment) {
+                    if(retrievedSize > 0)
+                    {
+                        precision = (double) relevanceSize / (double) retrievedSize;
+                        recall = (double) relevanceSize / (double) parser.getRelevanceJudgements().get(q).size();
+                        nonInterpolatedAveragePrecision = nonInterpolatedAveragePrecision / (double) parser.getRelevanceJudgements().get(q).size();
+                    }
+                    else
+                    {
+                        precision = 0;
+                        recall = 0;
+                        nonInterpolatedAveragePrecision = 0;
+                    }
+                }
+
+                toStringOutput += retrievedSize + "\n";
+                if (isExperiment) {
+                    toStringOutput += precision + "\n";
+                    toStringOutput += recall + "\n";
+                    toStringOutput += nonInterpolatedAveragePrecision + "\n";
+                }
+
+                for(int i=0; i<retrievedSize; i++)
                 {
-                    precision = 0;
-                    recall = 0;
-                    nonInterpolatedAveragePrecision = 0;
+                    toStringOutput += result.get(i).getDocNum()+1 + "\n";
+                    toStringOutput += parser.getDocumentsTitle().get(result.get(i).getDocNum()) + "\n";
                 }
+                printer.println((q+1)+","+precision+","+recall+","+nonInterpolatedAveragePrecision);
             }
+    //        toStringOutput += -1 + "\n";
+            toStringOutput = toStringOutput.substring(0, toStringOutput.length()-1);
+            printer.close();
 
-            toStringOutput += retrievedSize + "\n";
-            if (isExperiment) {
-                toStringOutput += precision + "\n";
-                toStringOutput += recall + "\n";
-                toStringOutput += nonInterpolatedAveragePrecision + "\n";
-            }
-
-            for(int i=0; i<retrievedSize; i++)
-            {
-                toStringOutput += result.get(i).getDocNum()+1 + "\n";
-                toStringOutput += parser.getDocumentsTitle().get(result.get(i).getDocNum()) + "\n";
-            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
-//        toStringOutput += -1 + "\n";
-        toStringOutput = toStringOutput.substring(0, toStringOutput.length()-1);
     }
 
     /**
@@ -279,6 +309,7 @@ public class DocumentRanker {
 
         //Document TF
         currentLine = scanner.nextLine();
+        DocumentTFOption = currentLine;
         if (currentLine.equalsIgnoreCase("notf"))
             this.documentTFOption = 0;
         else if (currentLine.equalsIgnoreCase("rawtf"))
@@ -292,6 +323,7 @@ public class DocumentRanker {
 
         //Document IDF
         currentLine = scanner.nextLine();
+        DocumentIDFOption = currentLine;
         if (currentLine.equalsIgnoreCase("noidf"))
             this.documentUseIDF = false;
         else if (currentLine.equalsIgnoreCase("usingidf"))
@@ -299,6 +331,7 @@ public class DocumentRanker {
 
         //Document normalization
         currentLine = scanner.nextLine();
+        DocumentnormalizationOption = currentLine;
         if (currentLine.equalsIgnoreCase("nonormalization"))
             this.documentUseNormalization = false;
         else if (currentLine.equalsIgnoreCase("usingnormalization"))
@@ -306,6 +339,7 @@ public class DocumentRanker {
 
         //Document Stemming
         currentLine = scanner.nextLine();
+        DocumentstemmingOption = currentLine;
         if (currentLine.equalsIgnoreCase("nostemming"))
             this.documentUseStemming = false;
         else if (currentLine.equalsIgnoreCase("usingstemming"))
@@ -313,6 +347,7 @@ public class DocumentRanker {
 
         //Query TF
         currentLine = scanner.nextLine();
+        QueryTFOption = currentLine;
         if (currentLine.equalsIgnoreCase("notf"))
             this.queryTFOption = 0;
         else if (currentLine.equalsIgnoreCase("rawtf"))
@@ -326,6 +361,7 @@ public class DocumentRanker {
 
         //Query IDF
         currentLine = scanner.nextLine();
+        QueryIDFOption = currentLine;
         if (currentLine.equalsIgnoreCase("noidf"))
             this.queryUseIDF = false;
         else if (currentLine.equalsIgnoreCase("usingidf"))
@@ -333,6 +369,7 @@ public class DocumentRanker {
 
         //Query normalization
         currentLine = scanner.nextLine();
+        QueryNormalizationOption = currentLine;
         if (currentLine.equalsIgnoreCase("nonormalization"))
             this.queryUseNormalization = false;
         else if (currentLine.equalsIgnoreCase("usingnormalization"))
@@ -340,6 +377,7 @@ public class DocumentRanker {
 
         //Query Stemming
         currentLine = scanner.nextLine();
+        QueryStemmingOption = currentLine;
         if (currentLine.equalsIgnoreCase("nostemming"))
             this.queryUseStemming = false;
         else if (currentLine.equalsIgnoreCase("usingstemming"))

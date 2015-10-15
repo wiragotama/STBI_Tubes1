@@ -597,6 +597,8 @@ public class VSM {
         }
 
         Double[] queryWeight = new Double[terms.size()];
+        for (int i=0; i<queryWeight.length; i++)
+            queryWeight[i] = 0.0;
         int termSize = terms.size();
         List<String> queryList = Arrays.asList(query);
 
@@ -620,6 +622,9 @@ public class VSM {
             for (int i = 0; i < termSize; i++) {
                 double TF = (double) Collections.frequency(queryList, terms.get(i));
                 //TFOption 0:no TF, 1:Raw TF, 2:Binary TF, 3:Augmented TF, 4:Logarithmic TF
+                if (TFOption==1) { //raw TF
+                    queryWeight[i] = TF;
+                }
                 if (TFOption == 2) { //binary TF
                     if (TF > 0) TF = 1.0;
                     if (useIDF)
@@ -681,7 +686,7 @@ public class VSM {
             {
                 int idx = this.terms.indexOf(terms.get(i));
                 if (idx!=-1) {
-                    System.out.println((this.weightMatrix.get(idx).get(doc) * queryWeight[i]));
+//                    System.out.println((this.weightMatrix.get(idx).get(doc) * queryWeight[i]));
                     SC_val += this.weightMatrix.get(idx).get(doc) * queryWeight[i];
                 }
             }
