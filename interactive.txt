@@ -1,14 +1,14 @@
 interactive
-query1 query2 query3 query4
-documentlocation uploads/felix.jpeg
-querylocation uploads/ichec3.jpg
-relevancejudgement uploads/printer.png
-stopwordlocation uploads/90tr021.pdf
-documentTF LogarithmicTF
-documentIDF UsingIDF
-documentNormalization UsingNormalization
-documentStemming UsingStemming
-queryTF BinaryTF
-queryIDF UsingIDF
-queryNormalization NoNormalization
-queryStemming UsingStemming
+computer revolution
+test_collections/adi/adi.all
+test_collections/adi/query.text
+test_collections/adi/qrels.text
+custom.stopword
+LogarithmicTF
+UsingIDF
+UsingNormalization
+UsingStemming
+BinaryTF
+UsingIDF
+NoNormalization
+UsingStemming
