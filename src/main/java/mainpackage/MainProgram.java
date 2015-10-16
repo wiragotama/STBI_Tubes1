@@ -28,7 +28,7 @@ public class MainProgram {
                             //do nothing
                         }
                         else {
-                            if(counter > 0) {
+                            if(counter > 1) {
                                 System.out.println(counter);
                                 DocumentRanker documentRanker = new DocumentRanker();
                                 documentRanker.setThreshold(0.01);

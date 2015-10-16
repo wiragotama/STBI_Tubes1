@@ -310,18 +310,22 @@ public class DocumentRanker {
             double recall = 0;
             double nonInterpolatedAveragePrecision = 0;
             toStringOutput = "";
+            StringBuffer tempOutput = new StringBuffer();
 
             // Evaluasi setiap document yang diretrieve dengan relevance judgment pada setiap query
             for(int q=0; q<queries.getQueries().size(); q++)
             {
-                System.out.println("Evaluate Query " + (q+1));
+                System.out.println("Evaluating Query " + (q+1));
                 retrievedSize = 0;
                 relevanceSize = 0;
                 nonInterpolatedAveragePrecision = 0;
                 precision = 0;
                 recall = 0;
 
+                //Mungkin bagian ini bisa dibikin multi threading?
                 result = vsm.queryTask(queries.getQuery(q), queryTFOption, queryUseIDF, queryUseNormalization);
+                System.out.println("Get result...");
+
                 for(int d=0; d<result.size(); d++)
                 {
                     if(result.get(d).getSC() > threshold)
@@ -334,6 +338,7 @@ public class DocumentRanker {
                             }
                     }
                 }
+                System.out.println("Get non Interpolated average precision...");
 
                 if (isExperiment) {
                     if(retrievedSize > 0)
@@ -348,24 +353,27 @@ public class DocumentRanker {
                         recall = 0;
                         nonInterpolatedAveragePrecision = 0;
                     }
+                    System.out.println("Get Experiment, precision, and recall...");
                 }
 
-                toStringOutput += retrievedSize + "\n";
+                //toStringOutput += retrievedSize + "\n";
+                tempOutput = tempOutput.append(retrievedSize).append("\n");
                 if (isExperiment) {
-                    toStringOutput += precision + "\n";
-                    toStringOutput += recall + "\n";
-                    toStringOutput += nonInterpolatedAveragePrecision + "\n";
+                    tempOutput = tempOutput.append(precision).append('\n');
+                    tempOutput = tempOutput.append(recall).append('\n');
+                    tempOutput = tempOutput.append(nonInterpolatedAveragePrecision).append('\n');
                 }
 
                 for(int i=0; i<retrievedSize; i++)
                 {
-                    toStringOutput += result.get(i).getDocNum()+1 + "\n";
-                    toStringOutput += parser.getDocumentsTitle().get(result.get(i).getDocNum()) + "\n";
+                    tempOutput = tempOutput.append(result.get(i).getDocNum()+1).append('\n');
+                    tempOutput = tempOutput.append(parser.getDocumentsTitle().get(result.get(i).getDocNum())).append('\n');
                 }
                 printer.println((q+1)+","+precision+","+recall+","+nonInterpolatedAveragePrecision);
+                System.out.println("Get All String printed...\n");
             }
-    //        toStringOutput += -1 + "\n";
-            toStringOutput = toStringOutput.substring(0, toStringOutput.length()-1);
+
+            toStringOutput = tempOutput.substring(0, tempOutput.length() - 1);
             printer.close();
 
         } catch (FileNotFoundException e) {
