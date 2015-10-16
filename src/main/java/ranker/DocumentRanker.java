@@ -102,11 +102,11 @@ public class DocumentRanker {
 
         //sementara diganti
         this.hijackedRead(a, b, c, d);
-//        System.out.println("Hijacked Read...");
+        System.out.println("Hijacked Read...");
 
         // buat parser berdasarkan collection set, test set, dan relevance judgement path
         parser = new Parser(documentPath, queryPath, relevanceJudgmentPath);
-//        System.out.println("Parser created...");
+        System.out.println("Parser created...");
 
         if(isExperiment)
         {
@@ -118,12 +118,12 @@ public class DocumentRanker {
             }
             vsm = new VSM();
             vsm.makeTFIDFWeightMatrix(documentTFOption, documentUseIDF, documentUseNormalization, collection);
-//            System.out.println("VSM created...");
+            System.out.println("VSM created...");
             queries = new Queries(stopwordsPath, queryUseStemming);
             queries.processQueriesFromFile(queryPath);
-//            System.out.println("Queries Processed...");
+            System.out.println("Queries Processed...");
             vsm.save("tfidf");
-//            System.out.println("VSM saved...");
+            System.out.println("VSM saved...");
         }
         else
         {
@@ -185,16 +185,16 @@ public class DocumentRanker {
     private void evaluateQuery()
     {
         /* Untuk output CSV */
-//        try {
-//            PrintWriter printer;
-//            printer = new PrintWriter("outputLaporan" + (counter+1) + ".csv", "UTF-8");
-//            printer.println(",document,query");
-//            printer.println("TF,"+this.DocumentTFOption+","+this.QueryTFOption);
-//            printer.println("IDF,"+this.DocumentIDFOption+","+this.QueryIDFOption);
-//            printer.println("Normalization,"+this.DocumentnormalizationOption+","+this.QueryNormalizationOption);
-//            printer.println("Stemming,"+this.DocumentstemmingOption+","+this.QueryStemmingOption);
-//            printer.println("Query");
-//            printer.println("Query,Precision,Recall,Non-Interpolated Average Precision");
+        try {
+            PrintWriter printer;
+            printer = new PrintWriter("outputLaporan" + (counter+1) + ".csv", "UTF-8");
+            printer.println(",document,query");
+            printer.println("TF,"+this.DocumentTFOption+","+this.QueryTFOption);
+            printer.println("IDF,"+this.DocumentIDFOption+","+this.QueryIDFOption);
+            printer.println("Normalization,"+this.DocumentnormalizationOption+","+this.QueryNormalizationOption);
+            printer.println("Stemming,"+this.DocumentstemmingOption+","+this.QueryStemmingOption);
+            printer.println("Query");
+            printer.println("Query,Precision,Recall,Non-Interpolated Average Precision");
 
             List<DocumentRank> result;
             results = new List[queries.getQueries().size()];
@@ -220,17 +220,17 @@ public class DocumentRanker {
                 queryTaskWorkers[i] = new QueryTaskWorker(i);
                 queryTaskWorkers[i].start();
             }
-//            System.out.println("All query worker started...");
+            System.out.println("All query worker started...");
             for(QueryTaskWorker queryTaskWorker : queryTaskWorkers)
             {
                 queryTaskWorker.join();
             }
-//            System.out.println("All query worker finished...");
+            System.out.println("All query worker finished...");
 
             // Evaluasi setiap document yang diretrieve dengan relevance judgment pada setiap query
             for(int q=0; q<queries.getQueries().size(); q++)
             {
-//                System.out.println("Evaluating Query " + (q+1));
+                System.out.println("Evaluating Query " + (q+1));
                 retrievedSize = 0;
                 relevanceSize = 0;
                 nonInterpolatedAveragePrecision = 0;
@@ -238,7 +238,7 @@ public class DocumentRanker {
                 recall = 0;
 
                 result = results[q];
-//                System.out.println("Get result...");
+                System.out.println("Get result...");
 
                 for(int d=0; d<result.size(); d++)
                 {
@@ -252,7 +252,7 @@ public class DocumentRanker {
                             }
                     }
                 }
-//                System.out.println("Get non Interpolated average precision...");
+                System.out.println("Get non Interpolated average precision...");
 
                 if (isExperiment) {
                     if(retrievedSize > 0)
@@ -267,10 +267,9 @@ public class DocumentRanker {
                         recall = 0;
                         nonInterpolatedAveragePrecision = 0;
                     }
-//                    System.out.println("Get Experiment, precision, and recall...");
+                    System.out.println("Get Experiment, precision, and recall...");
                 }
 
-                //toStringOutput += retrievedSize + "\n";
                 tempOutput = tempOutput.append(retrievedSize).append("\n");
                 if (isExperiment) {
                     tempOutput = tempOutput.append(precision).append('\n');
@@ -283,22 +282,22 @@ public class DocumentRanker {
                     tempOutput = tempOutput.append(result.get(i).getDocNum()+1).append('\n');
                     tempOutput = tempOutput.append(parser.getDocumentsTitle().get(result.get(i).getDocNum())).append('\n');
                 }
-//                printer.println((q+1)+","+precision+","+recall+","+nonInterpolatedAveragePrecision);
-//                System.out.println("Get All String printed...\n");
+                printer.println((q+1)+","+precision+","+recall+","+nonInterpolatedAveragePrecision);
+                System.out.println("Get All String printed...\n");
             }
 
             toStringOutput = tempOutput.substring(0, tempOutput.length() - 1);
-//            printer.close();
+            printer.close();
 
-//        }
-//        catch (FileNotFoundException e)
-//        {
-//            e.printStackTrace();
-//        }
-//        catch (UnsupportedEncodingException e)
-//        {
-//            e.printStackTrace();
-//        }
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -421,7 +420,7 @@ public class DocumentRanker {
         public void run() {
             for(int i = startIndex; i < queries.getQueries().size(); i=i+10)
             {
-//                System.out.println("Query worker processing query " + i);
+                System.out.println("Query worker processing query " + i);
                 results[i] = vsm.queryTask(queries.getQuery(i), queryTFOption, queryUseIDF, queryUseNormalization);
             }
         }

@@ -20,32 +20,31 @@ public class MainProgram {
     public static void main(String[] args)
     {
 //        Mode Hijacked
-//        int counter = 0;
-//        for (int i=0; i<5; i++) {
-//            for (int j = 0; j < 2; j++) {
-//                for (int k = 0; k < 2; k++) {
-//                    for (int l = 0; l < 2; l++) {
-//                        if (i == 0 && j == 0) {
-//                            //do nothing
-//                        } else {
-//                            if (counter >= 0) {
-//                                System.out.println(counter);
-//                                DocumentRanker documentRanker = new DocumentRanker();
-//                                documentRanker.setThreshold(0.01);
-//                                documentRanker.buildHijacked(i, j, k, l, counter);
-//                                //System.out.print(documentRanker.toString());
-//                            }
-//                            counter++;
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        int counter = 0;
+        for (int i=0; i<5; i++) {
+            for (int j = 0; j < 2; j++) {
+                for (int k = 0; k < 2; k++) {
+                    for (int l = 0; l < 2; l++) {
+                        if (i == 0 && j == 0) {
+                            //do nothing
+                        } else {
+                            if (counter >= 0) {
+                                System.out.println(counter);
+                                DocumentRanker documentRanker = new DocumentRanker();
+                                documentRanker.setThreshold(0.01);
+                                documentRanker.buildHijacked(i, j, k, l, counter);
+                            }
+                            counter++;
+                        }
+                    }
+                }
+            }
+        }
 
 //        Mode Normal
-        DocumentRanker documentRanker = new DocumentRanker();
-        documentRanker.setThreshold(0.01);
-        documentRanker.build();
-        System.out.println(documentRanker.toString());
+//        DocumentRanker documentRanker = new DocumentRanker();
+//        documentRanker.setThreshold(0.01);
+//        documentRanker.build();
+//        System.out.println(documentRanker.toString());
     }
 }
