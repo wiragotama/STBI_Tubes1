@@ -2,7 +2,7 @@
 TF,NoTF,NoTF
 IDF,UsingIDF,UsingIDF
 Normalization,UsingNormalization,UsingNormalization
-Stemming,NoStemming,NoStemming
+Stemming,UsingStemming,UsingStemming
 Query
 Query,Precision,Recall,Non-Interpolated Average Precision
 1,0.036585365853658534,1.0,0.050229629018507825

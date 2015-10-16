@@ -48,122 +48,15 @@ public class DocumentRanker {
     private String QueryNormalizationOption;
     private String QueryStemmingOption;
     private int counter;
+    private List<DocumentRank> [] results;
 
     public DocumentRanker()
     {
         this.counter = 0;
     }
 
-    public String getToStringOutput() {
-        return toStringOutput;
-    }
-
-    public void setToStringOutput(String toStringOutput) {
-        this.toStringOutput = toStringOutput;
-    }
-
-    public double getThreshold() {
-        return threshold;
-    }
-
     public void setThreshold(double threshold) {
         this.threshold = threshold;
-    }
-
-    public Parser getParser() {
-        return parser;
-    }
-
-    public void setParser(Parser parser) {
-        this.parser = parser;
-    }
-
-    public VSM getVsm() {
-        return vsm;
-    }
-
-    public void setVsm(VSM vsm) {
-        this.vsm = vsm;
-    }
-
-    public Documents getDocuments() {
-        return documents;
-    }
-
-    public void setDocuments(Documents documents) {
-        this.documents = documents;
-    }
-
-    public Queries getQueries() {
-        return queries;
-    }
-
-    public void setQueries(Queries queries) {
-        this.queries = queries;
-    }
-
-    public String getDocumentPath() {
-        return documentPath;
-    }
-
-    public void setDocumentPath(String documentPath) {
-        this.documentPath = documentPath;
-    }
-
-    public String getQueryPath() {
-        return queryPath;
-    }
-
-    public void setQueryPath(String queryPath) {
-        this.queryPath = queryPath;
-    }
-
-    public String getRelevanceJudgmentPath() {
-        return relevanceJudgmentPath;
-    }
-
-    public void setRelevanceJudgmentPath(String relevanceJudgmentPath) {
-        this.relevanceJudgmentPath = relevanceJudgmentPath;
-    }
-
-    public int getDocumentTFOption() {
-        return documentTFOption;
-    }
-
-    public void setDocumentTFOption(int documentTFOption) {
-        this.documentTFOption = documentTFOption;
-    }
-
-    public boolean isDocumentUseIDF() {
-        return documentUseIDF;
-    }
-
-    public void setDocumentUseIDF(boolean documentUseIDF) {
-        this.documentUseIDF = documentUseIDF;
-    }
-
-    public boolean isDocumentUseNormalization() {
-        return documentUseNormalization;
-    }
-
-    public void setDocumentUseNormalization(boolean documentUseNormalization) {
-        this.documentUseNormalization = documentUseNormalization;
-    }
-
-    public String getStopwordsPath() {
-        return stopwordsPath;
-    }
-
-    public void setStopwordsPath(String stopwordsPath) {
-        this.stopwordsPath = stopwordsPath;
-    }
-
-    public boolean isDocumentUseStemming() {
-        return documentUseStemming;
-    }
-
-    public void setDocumentUseStemming(boolean documentUseStemming) {
-        this.documentUseStemming = documentUseStemming;
     }
 
     public void hijackedRead(int i, int j, int k, int l)
@@ -178,7 +71,7 @@ public class DocumentRanker {
         //Document TF
         this.documentTFOption = this.queryTFOption = i;
         if (i==0) this.DocumentTFOption= this.QueryTFOption = "NoTF";
-        else if (i==1) this.DocumentIDFOption= this.QueryTFOption = "RawTF";
+        else if (i==1) this.DocumentTFOption= this.QueryTFOption = "RawTF";
         else if (i==2) this.DocumentTFOption= this.QueryTFOption = "BinaryTF";
         else if (i==3) this.DocumentTFOption= this.QueryTFOption = "AugmentedTF";
         else this.DocumentTFOption= this.QueryTFOption = "LogarithmicTF";
@@ -289,12 +182,7 @@ public class DocumentRanker {
         /* Untuk output CSV */
         try {
             PrintWriter printer;
-            if (counter!=0) {
-                printer = new PrintWriter("outputLaporan" + counter + ".csv", "UTF-8");
-            }
-            else {
-                printer = new PrintWriter("outputLaporan.csv", "UTF-8");
-            }
+            printer = new PrintWriter("outputLaporan" + (counter+1) + ".csv", "UTF-8");
             printer.println(",document,query");
             printer.println("TF,"+this.DocumentTFOption+","+this.QueryTFOption);
             printer.println("IDF,"+this.DocumentIDFOption+","+this.QueryIDFOption);
@@ -304,6 +192,8 @@ public class DocumentRanker {
             printer.println("Query,Precision,Recall,Non-Interpolated Average Precision");
 
             List<DocumentRank> result;
+            results = new List[queries.getQueries().size()];
+
             int retrievedSize = 0;
             int relevanceSize = 0;
             double precision = 0;
@@ -311,6 +201,24 @@ public class DocumentRanker {
             double nonInterpolatedAveragePrecision = 0;
             toStringOutput = "";
             StringBuffer tempOutput = new StringBuffer();
+
+            /* Jumlah thread 10, setiap thread menangani untuk kelipatan 10 dari index awal.
+             * Thread 0 -> query 0, query 10, query 20, ...
+             * Thread 1 -> query 1, query 11, query 21, ...
+             * Dibagi seperti ini agar beban tiap thread sama (Query semakin ke belakang, semakin panjang)
+            */
+            QueryTaskWorker[] queryTaskWorkers = new QueryTaskWorker[10];
+            for(int i=0; i<10; i++)
+            {
+                queryTaskWorkers[i] = new QueryTaskWorker(i);
+                queryTaskWorkers[i].start();
+            }
+            System.out.println("All query worker started...");
+            for(QueryTaskWorker queryTaskWorker : queryTaskWorkers)
+            {
+                queryTaskWorker.join();
+            }
+            System.out.println("All query worker finished...");
 
             // Evaluasi setiap document yang diretrieve dengan relevance judgment pada setiap query
             for(int q=0; q<queries.getQueries().size(); q++)
@@ -322,8 +230,7 @@ public class DocumentRanker {
                 precision = 0;
                 recall = 0;
 
-                //Mungkin bagian ini bisa dibikin multi threading?
-                result = vsm.queryTask(queries.getQuery(q), queryTFOption, queryUseIDF, queryUseNormalization);
+                result = results[q];
                 System.out.println("Get result...");
 
                 for(int d=0; d<result.size(); d++)
@@ -488,5 +395,45 @@ public class DocumentRanker {
      */
     public String toString() {
         return toStringOutput;
+    }
+
+    private class QueryTaskWorker implements Runnable
+    {
+        private int startIndex;
+        private Thread thread;
+
+        public QueryTaskWorker(int startIndex) {
+            this.startIndex = startIndex;
+        }
+
+        @Override
+        public void run() {
+            for(int i = startIndex; i < queries.getQueries().size(); i=i+10)
+            {
+                System.out.println("Query worker processing query " + i);
+                results[i] = vsm.queryTask(queries.getQuery(i), queryTFOption, queryUseIDF, queryUseNormalization);
+            }
+        }
+
+        public void start()
+        {
+            if(thread == null)
+            {
+                thread = new Thread(this);
+            }
+            thread.start();
+        }
+
+        public void join()
+        {
+            if(thread != null)
+            {
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

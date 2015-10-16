@@ -28,12 +28,12 @@ public class MainProgram {
                             //do nothing
                         }
                         else {
-                            if(counter > 1) {
+                            if(counter >= 0) {
                                 System.out.println(counter);
                                 DocumentRanker documentRanker = new DocumentRanker();
                                 documentRanker.setThreshold(0.01);
                                 documentRanker.buildHijacked(i, j, k, l, counter);
-                                System.out.print(documentRanker.toString());
+                                //System.out.print(documentRanker.toString());
                             }
                             counter++;
                         }
